@@ -1,0 +1,39 @@
+[b]Getting started with this editor[/b]
+
+Depending on the kind of person you are, this level editor might seem strange to you, but if you've used a vim or vim-like editor, you'll probably feel right at home! This guide will teach you everything you need to know to use this editor. To quit this guide, simply press the escape key on your keyboard.
+
+[b]Modes[/b]
+This editor has several modes.You are currently in [b]help mode[/b]. The modes are:
+[indent][b]Insert mode:[/b] The mode you use to add and remove notes from the chart.[/indent]
+[indent][b]Select mode:[/b] The mode you use to select notes and perform actions across all of them.[/indent]
+[indent][b]Paste mode:[/b] The mode you use to paste selections.[/indent]
+[indent][b]Help mode:[/b] The mode you are in right now, which displays the help interface you are currently reading.[/indent]
+[indent][b]Command mode:[/b] The mode you are in whenever you are typing in the command line (you used this mode when you typed :help just now!)[/indent]
+
+[b]Keybinds[/b]
+Keybinds are a series of key presses you can do anywhere in the editor, depending on the mode you are currently in. Remember how you can press the escape key to exit the help interface? That's a keybind. It puts you in insert mode. It is accessible from any mode.
+
+Keybinds will always be written in [code]this font[/code].
+
+If you see [code]<n>[/code] in a keybind, it's because you must enter a number in that place. This number can be a fraction using [code]-[/code] to separate enumerator from denominator, or a mixed number, using [code]-[/code] to separate the integer part, the enumerator and the denumerator. For example [code]6-5-3[/code] is six and five thirds.
+
+If you see [code]<d>[/code] in a keybind, it's because you must enter a number in that place. This number cannot be a fraction or a mixed number.
+
+If you see [code]<c>[/code] in a keybind, it's because you must enter a character in that place.
+
+If you see an uppercase letter, that means you have to press shift for that letter. Similarly, a keybind preceded by [code]S-[/code] is one that you have to press shift for. When using [code]S-[/code], the keybind will also be written inside angle brackets. For example, [code]<S-5>[/code] is Shift+5.
+
+You'll see some named  keys (that is, keys that have a proper name and don't represent a simple letter, such as Escape) will be abbreviated and written in angle brackets. For example, [code]<ESC>[/code] is the Escape key.
+
+[b]Help keybinds[/b]
+In help mode, the keybinds you can use are:
+
+[table=2]
+[cell][code]j[/code][/cell][cell]Scroll downward[/cell]
+[cell][code]k[/code][/cell][cell]Scroll upward[/cell]
+[cell][code]h[/code][/cell][cell]Next help article[/cell]
+[cell][code]l[/code][/cell][cell]Previous help article[/cell]
+[cell][code]<ESC>[/code][/cell][cell]Enter insert mode.[/cell]
+[/table]
+
+Go to the next help article to learn about the command line.

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Dead+City.mp3-73914980941f079a1896722a69658f64.mp3str"
+
+[deps]
+
+source_file="res://Dead+City.mp3"
+dest_files=[ "res://.import/Dead+City.mp3-73914980941f079a1896722a69658f64.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

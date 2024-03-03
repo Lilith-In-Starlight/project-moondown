@@ -1,0 +1,19 @@
+[b]Setting up a song's data[/b]
+
+A song has data like bpm and title. You set this data using the command line. To enter the command line, enter the [code]:[/code] keybind. We'll use the [code]:set[/code] command in this lesson.
+
+To set a song's bpm, simply enter the [code]:set bpm=<d>[/code] command. For example, [code]:set bpm=50[/code] will set the bpm to 50.
+
+To set a song's title, simply enter the [code:set title=<s>[/code] command. For example, [code]:set title=Pandora's Tower[/code] will set the title to [b]Pandora's Tower[/b].
+
+To set a song's author, simply enter the [code]:set author=<s>[/code] command. For example, [code]:set title=Pandora's Tower[/code] will set the title to [b]Pandora's Tower[/b].
+
+If you'd rather, you can also set the length of each beat in seconds. This is called the "crotchet." [code]:set crotchet=<d>[/code]
+
+[b]Settings viewed in this lesson:[/b]
+
+[table=2]
+[cell][code]bpm[/code][/cell][cell]Song's BPM[/cell]
+[cell][code]title[/code][/cell][cell]Song's title[/cell]
+[cell][code]crotchet[/code][/cell][cell]The length of each beat in seconds[/cell]
+[/table]

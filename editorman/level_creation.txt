@@ -1,0 +1,31 @@
+[b]Creating your level[/b]
+
+To add notes to your level, you'll use a variety of keybinds in Insert mode. Insert mode has a variety of keybinds made to quickly edit levels.
+
+[b]Adding notes[/b]
+To add notes, you press the keybinds [code]a[/code], [code]s[/code], [code]d[/code] to create notes. These will add notes in each of the key's respective lanes. If there is already a note where you press the keybind, you'll instead remove that note.
+
+To add sustained notes, you press the keybinds [code]A[/code], [code]S[/code], [code]D[/code] to start a sustained note. If you press it again, you'll finish setting up the note and it will be added.
+
+[b]Moving up and down[/b]
+To move up and down in the chart, you press the keys [code]j[/code] and [code]k[/code]. This will move you one beat up and down by default, but you can change the scroll speed. The keybinds [code]J[/code] and [code]K[/code] will move you one quarter of the current scroll speed.
+
+[code]<n>j[/code] and [code]<n>j[/code] will move you the supplied amount of beats up or down. Using their uppercase variants will move you the supplied amount of times the scroll speed.
+
+To change the scroll speed, you press [code]<n>m[/code]. The number given to it will become the scroll speed in beats. If you want to set the scroll speed to 1 beat, you can press [code]m[/code]
+
+To change the grid size, you press [code]<n>n[/code]. The number given to it will become the distance between grid lines in beats.
+
+If you want to set the grid size to be the same as the scroll speed, you can press [code]N[/code]. If you want to align yourself to the grid, you can press [code]n[/code].
+
+[b]Moving already existing notes[/b]
+You can move already existing notes by pressing [code]l[/code] to move them up and [code]h[/code] to move them down. 
+
+[b]Saving your progress[/b]
+With the [code]:w[/code] command you can save your progress.
+
+With the [code]:wq[/code] command you can save your progress and quit the editor.
+
+With the [code]:q[/code] command you can quit the editor if you don't have unsaved progress.
+
+With the [code]:q![/code] command you can quit the editor without saving.

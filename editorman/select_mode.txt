@@ -1,0 +1,27 @@
+[b]Using select mode[/b]
+
+Sometimes you want to select specific notes and perform operations on them. For this, you can press [code]v[/code]. This will enter selection mode. 
+
+In selection mode, you have a cursor that can move horizontally. You move it with [code]a[/code] and [code]d[/code]. You can also move up with the same keybinds as before.
+
+To start a selection block, press [code]f[/code].
+
+Moving up and down will extend the selection block up and down, and you can extend it to the right and left. You can finish the selection block with the [code]f[/code] keybind. You can have multiple selection blocks. 
+
+You can then perform operations like move the notes in the selection up and down with [code]h[/code] and [code]l[/code]. 
+
+You can also remove them them with [code]r[/code]. This will move them to your 0 clipboard (you will learn about the several clipboards later in this section).
+
+You can copy a set of notes with [code]y[/code]. You can cut a selection with [code]R[/code]. This will put them in your 1 clipboard.
+
+You can paste from the 1 clipboard with [code]p[/code], and from the 0 clipboard with [code]P[/code]. Doing this will put you in paste mode.
+
+[b]Paste Mode[/b]
+In paste mode, you'll see a preview of the notes you're going to paste. You can move this preview up and down with [code]h[/code] and [code]l[/code], and to the left and right with [code]a[/code] and [code]d[/code]. The selection will wrap around on the left and right if it overflows the amount of lanes.
+
+You can press [code]<n>.[/code] to change the clipboard that is previewed and pasted.
+
+[b]The several clipboards[/b].
+The editor has many clipboards. Your main clipboard is the [code]a[/code] clipboard. Your delete clipboard is your [code]z[/code] clipboard.
+
+The keybinds to specify a clipboard are [code]<c>y[/code], [code]<c>d[/code], [code]<c>p[/code]. For example, [code]P[/code] is the same as [code]0p[/code].

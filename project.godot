@@ -1,0 +1,183 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node",
+"class": "Conductor",
+"language": "GDScript",
+"path": "res://Conductor.gd"
+}, {
+"base": "Control",
+"class": "EditorGameMode",
+"language": "GDScript",
+"path": "res://GameModes/Editor.gd"
+}, {
+"base": "Node",
+"class": "EditorMode",
+"language": "GDScript",
+"path": "res://GameModes/EditorModes/EditorMode.gd"
+}, {
+"base": "Reference",
+"class": "Fraction",
+"language": "GDScript",
+"path": "res://Fraction.gd"
+}, {
+"base": "EditorVCSInterface",
+"class": "GitAPI",
+"language": "NativeScript",
+"path": "res://addons/godot-git-plugin/git_api.gdns"
+}, {
+"base": "Reference",
+"class": "NoteData",
+"language": "GDScript",
+"path": "res://NoteData.gd"
+}, {
+"base": "Reference",
+"class": "Selection",
+"language": "GDScript",
+"path": "res://Selection.gd"
+}, {
+"base": "Node",
+"class": "SongData",
+"language": "GDScript",
+"path": "res://SongData.gd"
+}, {
+"base": "Reference",
+"class": "TimeUnit",
+"language": "GDScript",
+"path": "res://Time.gd"
+}, {
+"base": "Node",
+"class": "Util",
+"language": "GDScript",
+"path": "res://Utils.gd"
+} ]
+_global_script_class_icons={
+"Conductor": "",
+"EditorGameMode": "",
+"EditorMode": "",
+"Fraction": "",
+"GitAPI": "",
+"NoteData": "",
+"Selection": "",
+"SongData": "",
+"TimeUnit": "",
+"Util": ""
+}
+
+[application]
+
+config/name="Project Moondown"
+run/main_scene="res://IntroCredits.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Samantha"
+boot_splash/show_image=false
+boot_splash/bg_color=Color( 0, 0, 0, 1 )
+config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://Global.gd"
+
+[display]
+
+window/size/fullscreen=true
+window/stretch/mode="2d"
+window/stretch/aspect="keep_height"
+
+[editor]
+
+version_control_autoload_on_startup=true
+version_control_plugin_name="GitAPI"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/hdr_mode": 0,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d": false,
+"flags/anisotropic": false,
+"flags/filter": false,
+"flags/mipmaps": false,
+"flags/repeat": 0,
+"flags/srgb": 2,
+"process/HDR_as_SRGB": false,
+"process/fix_alpha_border": true,
+"process/invert_color": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"size_limit": 0,
+"stream": false,
+"svg/scale": 1.0
+}
+mp3={
+"loop": false,
+"loop_offset": 0
+}
+
+[input]
+
+ui_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":12,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
+ui_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+, Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":13,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
+button1={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":65,"unicode":0,"echo":false,"script":null)
+ ]
+}
+button2={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
+ ]
+}
+button3={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":68,"unicode":0,"echo":false,"script":null)
+ ]
+}
+buttonpause={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":32,"unicode":0,"echo":false,"script":null)
+ ]
+}
+editlevel={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":69,"unicode":0,"echo":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+2d/snapping/use_gpu_pixel_snap=true
+threads/thread_model=2
+environment/default_clear_color=Color( 0.290196, 0.12549, 0.145098, 1 )
+environment/default_environment="res://default_env.tres"

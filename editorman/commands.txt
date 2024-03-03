@@ -1,0 +1,21 @@
+[b]List of commands[/b]
+
+[table=2]
+[cell][code]:set <setting>=<value>[/code][/cell][cell]Sets <setting> to the given <value>[/cell]
+[cell][code]:w[/code][/cell][cell]Save level[/cell]
+[cell][code]:wq[/code][/cell][cell]Save level and quit editor[/cell]
+[cell][code]:q[/code][/cell][cell]Quit editor only if all changes are saved[/cell]
+[cell][code]:q![/code][/cell][cell]Quit editor without saving[/cell]
+[/table]
+
+[b]List of settings[/b]
+
+[table=3]
+[cell][b]Property[/b][/cell][cell][b]Expected value[/b][/cell][cell][b]Description[/b][/cell]
+[cell][code]bpm[/code][/cell][cell]Number[/cell][cell]Current level's BPM (tied to crotchet)[/cell]
+[cell][code]title[/code][/cell][cell]String[/cell][cell]Current level's title[/cell]
+[cell][code]crotchet[/code][/cell][cell]Decimal number[/cell][cell]Current level's crotchet (tied to bpm)[/cell]
+[cell][code]viewgrid[/code][/cell][cell]true/false[/cell][cell]Whether the grid is visible[/cell]
+[cell][code]gridnumbers[/code][/cell][cell]mixed/fraction/decimal/off[/cell][cell]How to display grid numbers[/cell]
+[cell][code]speed[/code][/cell][cell]Decimal number[/cell][cell]Speed at which the song will be played during the next test session[/cell]
+[/table]

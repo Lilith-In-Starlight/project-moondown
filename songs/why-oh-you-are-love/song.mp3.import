@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/song.mp3-c2ebac2f13de878d733acf8764ccec99.mp3str"
+
+[deps]
+
+source_file="res://songs/why-oh-you-are-love/song.mp3"
+dest_files=[ "res://.import/song.mp3-c2ebac2f13de878d733acf8764ccec99.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

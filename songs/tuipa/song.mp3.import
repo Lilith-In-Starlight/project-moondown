@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/song.mp3-b0b9446a81a56a43b0f87036fc99cb2d.mp3str"
+
+[deps]
+
+source_file="res://songs/tuipa/song.mp3"
+dest_files=[ "res://.import/song.mp3-b0b9446a81a56a43b0f87036fc99cb2d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

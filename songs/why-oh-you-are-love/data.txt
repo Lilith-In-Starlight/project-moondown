@@ -1,0 +1,15 @@
+{
+	"title": "Why Oh You Are LOVE",
+	"author": "Dancefloor Is Lava",
+	"bpm": 130.0,
+	"style": {
+		"bg_color": "#071c34",
+		"note_colors": ["#48c6ff", "#ffafec"],
+		"playfield": {
+			"bg_color": "#19252d",
+			"lines": "#afffff",
+			"last_line": "#89faff",
+		},
+		"combo_note_color": "#ff9abe",
+	}
+}
