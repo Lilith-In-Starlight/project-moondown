@@ -1,22 +1,23 @@
 extends Node
 
-const PASS: = "asdjfow98fnqHJNPOhwlpfnaopvnQPOIHGVEAGNFQLÑjf9iw"
+const PASS := "asdjfow98fnqHJNPOhwlpfnaopvnQPOIHGVEAGNFQL�jf9iw"
 
-const PERFECT_TIMING: = 0.06
-const INEXACT_PERFECT_TIMING: = 0.1
-const OKAY_TIMING: = 0.2
+const PERFECT_TIMING := 0.06
+const INEXACT_PERFECT_TIMING := 0.1
+const OKAY_TIMING := 0.2
 
-var SCROLL_SPEED: = 300.0
-	
-var song_data:SongData = null
+var SCROLL_SPEED := 300.0
 
-var using_editor: = false
+var song_data: SongData = null
 
-var game_data: = ConfigFile.new()
+var using_editor := false
 
-var to_menu: = "main"
+var game_data := ConfigFile.new()
 
-func _ready()->void :
+var to_menu := "main"
+
+
+func _ready() -> void:
 	load_data()
 
 
@@ -31,8 +32,8 @@ func load_data():
 
 
 func get_song_access_hash(song_path):
-	var level_file: = File.new()
-	var level_data: = level_file.get_sha256(song_path + "/level.txt")
-	var data_data: = level_file.get_sha256(song_path + "/data.txt")
+	var level_file := File.new()
+	var level_data := level_file.get_sha256(song_path + "/level.txt")
+	var data_data := level_file.get_sha256(song_path + "/data.txt")
 	var song_data = level_file.get_sha256(song_path + "/song.mp3")
 	return str(level_data) + str(data_data) + str(hash(song_data))
