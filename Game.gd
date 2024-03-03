@@ -150,7 +150,7 @@ func _process(delta:float)->void :
 		song_ended = false
 		$Editor.process(delta)
 
-		if Input.is_action_just_pressed("editlevel"):
+		if Input.is_action_just_pressed("editlevel") and not $Editor.editor_mode in [1, 4]:
 			previous_left_note = null
 			previous_middle_note = null
 			previous_right_note = null
