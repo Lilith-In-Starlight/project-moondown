@@ -28,15 +28,15 @@ func set_from_dict(data:Dictionary)->void :
 	if data.has("style"):
 		styled = true
 		var style:Dictionary = data["style"]
-		bg_color = style["bg_color"] if style.has("bg_color") else bg_color
-		color1 = style["note_colors"][0] if style.has("note_colors") else color1
-		color2 = style["note_colors"][1] if style.has("note_colors") else color2
-		combo_note_color = style["combo_note_color"] if style.has("combo_note_color") else combo_note_color
+		bg_color = Color(style["bg_color"]) if style.has("bg_color") else bg_color
+		color1 = Color(style["note_colors"][0]) if style.has("note_colors") else color1
+		color2 = Color(style["note_colors"][1]) if style.has("note_colors") else color2
+		combo_note_color = Color(style["combo_note_color"]) if style.has("combo_note_color") else combo_note_color
 		if style.has("playfield"):
 			var playstyle:Dictionary = style["playfield"]
-			playfield = style["bg_color"] if style.has("bg_color") else playfield
-			play_lines = style["lines"] if style.has("lines") else play_lines
-			play_last_line = style["last_line"] if style.has("last_line") else play_last_line
+			playfield = Color(style["bg_color"]) if style.has("bg_color") else playfield
+			play_lines = Color(style["lines"]) if style.has("lines") else play_lines
+			play_last_line = Color(style["last_line"]) if style.has("last_line") else play_last_line
 
 
 func get_as_dict()->Dictionary:
