@@ -1,5 +1,3 @@
-use std::default;
-
 use godot::{
     builtin::{Array, Variant, VariantArray},
     classes::{AudioServer, AudioStreamPlayer, INode, Node},
@@ -7,7 +5,7 @@ use godot::{
     register::{godot_api, GodotClass},
 };
 
-use crate::BpmTime;
+use crate::bpm_time::BpmTime;
 
 #[derive(GodotClass)]
 #[class(base=Node)]

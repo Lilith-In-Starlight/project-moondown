@@ -2,11 +2,11 @@ extends Control
 
 @onready var note_display := $Notes
 @onready var combo_note := $ComboNote
-@onready var limit_line := $Panel2
-@onready var note_hit_particles := [$Panel2/Node2D, $Panel2/Node2D2, $Panel2/Node2D3]
-@onready var note_hit_lights := [$LightUpA, $LightUpB, $LightUpC]
-@onready var playfield := $Panel3
-@onready var play_lines := $Panel3/Lines
+@onready var limit_line := $LimitLine
+@onready var note_hit_particles := [$LimitLine/Node2D, $LimitLine/Node2D2, $LimitLine/Node2D3]
+@onready var note_hit_lights := [$Board/LightUpA, $Board/LightUpB, $Board/LightUpC]
+@onready var playfield := $Board
+@onready var play_lines := $Board/Lines
 @onready var background := $Background
 @onready var background_flash := $Background/Flash
 
@@ -100,6 +100,14 @@ func _ready() -> void:
 	editor_hud.editor_notes.append((conductor.notes[1].duplicate()))
 	editor_hud.editor_notes.append((conductor.notes[2].duplicate()))
 	
+	# Set the positions of all decorative things
+	note_hit_lights[0].position.x = -100 + (playfield.size.x / 2.0) - note_hit_lights[0].size.x / 2.0
+	note_hit_lights[1].position.x = (playfield.size.x / 2.0) - note_hit_lights[1].size.x / 2.0
+	note_hit_lights[2].position.x = 100 + (playfield.size.x / 2.0) - note_hit_lights[2].size.x / 2.0
+	note_hit_particles[0].position.x = -100 + (get_viewport_rect().size.x / 2.0)
+	note_hit_particles[1].position.x = (get_viewport_rect().size.x / 2.0)
+	note_hit_particles[2].position.x = 100 + (get_viewport_rect().size.x / 2.0)
+	
 	if Global.using_editor:
 		conductor.notes[0] = editor_hud.editor_notes[0]
 		conductor.notes[1] = editor_hud.editor_notes[1]
@@ -169,7 +177,7 @@ func process_game(delta: float) -> void:
 	ranking_score_display.text = "Score: " + str(score + combo_score * combo)
 	if combo > highest_combo: highest_combo = combo
 	var rank = 0.0
-	note_display.position.y = (conductor.song_position().get_time_in_beats() - game_start_timer.time_left / conductor.get_crotchet()) * Global.SCROLL_SPEED
+	note_display.position.y = (conductor.song_position().get_time_in_beats() - game_start_timer.time_left / conductor.get_crotchet()) * Global.scroll_speed
 	if total != 0.0:
 		rank = float(current) / float(total)
 	
@@ -179,18 +187,12 @@ func process_game(delta: float) -> void:
 	pause_menu.visible = get_tree().paused
 	
 	note_hit_lights[0].visible = Input.is_action_pressed("button1")
-	note_hit_lights[0].position.x = -100 + (get_viewport_rect().size.x / 2.0) - note_hit_lights[0].size.x / 2.0
 	note_hit_lights[1].visible = Input.is_action_pressed("button2")
-	note_hit_lights[1].position.x = (get_viewport_rect().size.x / 2.0) - note_hit_lights[1].size.x / 2.0
 	note_hit_lights[2].visible = Input.is_action_pressed("button3")
-	note_hit_lights[2].position.x = 100 + (get_viewport_rect().size.x / 2.0) - note_hit_lights[2].size.x / 2.0
 	
 	note_hit_particles[0].emitting = Input.is_action_pressed("button1")
-	note_hit_particles[0].position.x = -100 + (get_viewport_rect().size.x / 2.0)
 	note_hit_particles[1].emitting = Input.is_action_pressed("button2")
-	note_hit_particles[1].position.x = (get_viewport_rect().size.x / 2.0)
 	note_hit_particles[2].emitting = Input.is_action_pressed("button3")
-	note_hit_particles[2].position.x = 100 + (get_viewport_rect().size.x / 2.0)
 	
 	if get_tree().paused:
 		if Input.is_action_just_pressed("button1") and not editor_hud.changes_done:
@@ -289,7 +291,7 @@ func process_game(delta: float) -> void:
 		if abs(conductor.song_position().get_time_in_seconds() - combo_timer_goal) < conductor.get_crotchet() * 0.5 and not note_approaches:
 			live_luna_reaction.play("combo_fear")
 		
-		if combo_timer_goal + Global.OKAY_TIMING <= conductor.song_position().get_time_in_seconds() and note_display.get_child_count() != 0:
+		if combo_timer_goal + Global.get_okay_timing() <= conductor.song_position().get_time_in_seconds() and note_display.get_child_count() != 0:
 			score += combo_score * combo
 			combo_score = 0
 			combo = 0
@@ -297,12 +299,12 @@ func process_game(delta: float) -> void:
 			combo_was.text = "that combo was..."
 			hit_notification.text = "Super F!"
 	
-	var combo_should_y = -combo_timer_goal / conductor.get_crotchet() * Global.SCROLL_SPEED + 555 + conductor.song_position().get_time_in_beats() * Global.SCROLL_SPEED - combo_note.size.y / 2.0
+	var combo_should_y = -combo_timer_goal / conductor.get_crotchet() * Global.scroll_speed + 555 + conductor.song_position().get_time_in_beats() * Global.scroll_speed - combo_note.size.y / 2.0
 	if combo_note.position.y < combo_should_y:
 		combo_note.position.y = combo_should_y
 	else:
 		combo_note.position.y = lerp(combo_note.position.y, combo_should_y, 0.3)
-	combo_note.size.y = (Global.SCROLL_SPEED / conductor.get_crotchet()) * 0.1 * combo_timer_precision
+	combo_note.size.y = (Global.scroll_speed / conductor.get_crotchet()) * 0.1 * combo_timer_precision
 	
 	if combo != 0:
 		combo_title.text = get_combo_title(combo)
@@ -380,7 +382,7 @@ func hit_note(imprecision, lateness, time, combo_leniency:=1.0):
 	note_approaches = false
 	var previous_combo = combo
 	total += 100
-	if imprecision < Global.PERFECT_TIMING * combo_leniency:
+	if imprecision < Global.get_perfect_timing() * combo_leniency:
 		current += 100
 		combo_timer_goal = ceil(time) * conductor.get_crotchet() + 2.0 * conductor.get_crotchet()
 		combo += 1
@@ -388,14 +390,14 @@ func hit_note(imprecision, lateness, time, combo_leniency:=1.0):
 		combo_timer_precision = 1.0
 		combo_score += 100
 		
-	elif imprecision < Global.INEXACT_PERFECT_TIMING * combo_leniency and lateness == - 1:
+	elif imprecision < Global.get_inexact_perfect_timing() * combo_leniency and lateness == - 1:
 		current += 98
 		combo_timer_goal = ceil(time) * conductor.get_crotchet() + 2.0 * conductor.get_crotchet()
 		combo += 1
 		hit_notification.text = "EPerfect!"
 		combo_timer_precision = 1.0
 		combo_score += 90
-	elif imprecision < Global.INEXACT_PERFECT_TIMING * combo_leniency and lateness == 1:
+	elif imprecision < Global.get_inexact_perfect_timing() * combo_leniency and lateness == 1:
 		current += 98
 		combo_timer_goal = ceil(time) * conductor.get_crotchet() + 2.0 * conductor.get_crotchet()
 		combo += 1
@@ -403,14 +405,14 @@ func hit_note(imprecision, lateness, time, combo_leniency:=1.0):
 		combo_timer_precision = 1.0
 		combo_score += 90
 	
-	elif imprecision < Global.OKAY_TIMING * combo_leniency and lateness == - 1:
+	elif imprecision < Global.get_okay_timing() * combo_leniency and lateness == - 1:
 		current += 50
 		combo_timer_goal = ceil(time) * conductor.get_crotchet() + 2.0 * conductor.get_crotchet()
 		combo += 1
 		hit_notification.text = "EOkay!"
 		combo_timer_precision = 1.0
 		combo_score += 20
-	elif imprecision < Global.OKAY_TIMING * combo_leniency and lateness == 1:
+	elif imprecision < Global.get_okay_timing() * combo_leniency and lateness == 1:
 		current += 50
 		combo_timer_goal = ceil(time) * conductor.get_crotchet() + 2.0 * conductor.get_crotchet()
 		combo += 1
@@ -608,27 +610,27 @@ func process_combo_timer():
 	var combo_note_imprecision = abs(combo_timer_goal - last_input_time)
 	var beat_time = ceil(conductor.song_position().get_time_in_beats()) * conductor.get_crotchet()
 	var late = combo_timer_goal < last_input_time
-	if combo_note_imprecision < Global.PERFECT_TIMING * combo_timer_precision:
+	if combo_note_imprecision < Global.get_perfect_timing() * combo_timer_precision:
 		combo_note_get_sfx.play()
 		combo_timer_precision *= 0.8
 		hit_notification.text = "Recovery!"
 		combo_timer_goal = ceil(beat_time) + 2.0 * conductor.get_crotchet()
-	elif combo_note_imprecision < Global.INEXACT_PERFECT_TIMING * combo_timer_precision and not late:
+	elif combo_note_imprecision < Global.get_inexact_perfect_timing() * combo_timer_precision and not late:
 		combo_note_get_sfx.play()
 		hit_notification.text = "ERecovery"
 		combo_timer_precision *= 0.98
 		combo_timer_goal = ceil(beat_time) + 2.0 * conductor.get_crotchet()
-	elif combo_note_imprecision < Global.INEXACT_PERFECT_TIMING * combo_timer_precision and late:
+	elif combo_note_imprecision < Global.get_inexact_perfect_timing() * combo_timer_precision and late:
 		combo_note_get_sfx.play()
 		hit_notification.text = "LRecovery"
 		combo_timer_precision *= 0.98
 		combo_timer_goal = ceil(beat_time) + 2.0 * conductor.get_crotchet()
-	elif combo_note_imprecision < Global.OKAY_TIMING * combo_timer_precision and not late:
+	elif combo_note_imprecision < Global.get_okay_timing() * combo_timer_precision and not late:
 		combo_note_get_sfx.play()
 		hit_notification.text = "A Bit Early!"
 		combo_timer_precision *= 0.98
 		combo_timer_goal = ceil(beat_time) + 2.0 * conductor.get_crotchet()
-	elif combo_note_imprecision < Global.OKAY_TIMING * combo_timer_precision and late:
+	elif combo_note_imprecision < Global.get_okay_timing() * combo_timer_precision and late:
 		combo_note_get_sfx.play()
 		hit_notification.text = "Almost late!!"
 		combo_timer_precision *= 0.98

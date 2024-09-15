@@ -217,15 +217,15 @@ func draw_selections(editor:EditorGameMode):
 		var selection:Selection = editor_selections[idx] if idx != editor_selections.size() else editing_selection
 		if idx != editor_selections.size():
 			child.position.x = lerp(child.position.x, selection.start.x * selection_display.size.x / 3.0, 0.2)
-			child.position.y = lerp(child.position.y, selection.end.y * - Global.SCROLL_SPEED + 555 - 32 + editor.editor_beat * Global.SCROLL_SPEED, 0.2)
+			child.position.y = lerp(child.position.y, selection.end.y * - Global.scroll_speed + 555 - 32 + editor.editor_beat * Global.scroll_speed, 0.2)
 			child.size.x = (selection.end.x - selection.start.x + 1) * selection_display.size.x / 3.0
-			child.size.y = (selection.end.y - selection.start.y) * Global.SCROLL_SPEED + 64
+			child.size.y = (selection.end.y - selection.start.y) * Global.scroll_speed + 64
 		else :
 			var starty:float = min(editor.editor_beat, selection.start.y)
 			var startx:float = min(selection_cursor, selection.start.x)
 			var endy:float = max(editor.editor_beat, selection.start.y)
 			var endx:float = max(selection_cursor, selection.start.x)
 			child.position.x = lerp(child.position.x, startx * selection_display.size.x / 3.0, 0.2)
-			child.position.y = lerp(child.position.y, 555 - 32 + (endy - editor.editor_beat) * - Global.SCROLL_SPEED, 0.2)
+			child.position.y = lerp(child.position.y, 555 - 32 + (endy - editor.editor_beat) * - Global.scroll_speed, 0.2)
 			child.size.x = lerp(child.size.x, (endx - startx + 1) * selection_display.size.x / 3.0, 0.2)
-			child.size.y = lerp(child.size.y, (endy - starty) * Global.SCROLL_SPEED + 64, 0.2)
+			child.size.y = lerp(child.size.y, (endy - starty) * Global.scroll_speed + 64, 0.2)

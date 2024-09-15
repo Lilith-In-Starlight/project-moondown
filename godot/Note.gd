@@ -35,9 +35,9 @@ var simulate_hits: = false
 
 func _ready()->void :
 	def_modulate = modulate
-	position.y = - hit_beat_number * Global.SCROLL_SPEED + 555
+	position.y = - hit_beat_number * Global.scroll_speed + 555
 	if sustain:
-		$Icon2.position.y = - (release_beat_number - hit_beat_number) * Global.SCROLL_SPEED
+		$Icon2.position.y = - (release_beat_number - hit_beat_number) * Global.scroll_speed
 		$Icon2.visible = true
 		$Icon3.visible = true
 		$Icon3.scale.y = (1 / 64.0) * ($Icon.position.y - $Icon2.position.y)
@@ -153,9 +153,9 @@ func align_to_note_data(nd: NoteData) -> void:
 	sustain = nd.is_sustain()
 	
 	def_modulate = modulate
-	position.y = - hit_beat_number * Global.SCROLL_SPEED + 555
+	position.y = - hit_beat_number * Global.scroll_speed + 555
 	if sustain:
-		$Icon2.position.y = - (release_beat_number - hit_beat_number) * Global.SCROLL_SPEED
+		$Icon2.position.y = - (release_beat_number - hit_beat_number) * Global.scroll_speed
 		$Icon2.visible = true
 		$Icon3.visible = true
 		$Icon3.scale.y = (1 / 64.0) * ($Icon.position.y - $Icon2.position.y)

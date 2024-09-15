@@ -26,7 +26,7 @@ func change_menu_to(to:String)->void :
 			gameplay.visible = true
 			audio.visible = false
 			main.visible = false
-			slider.value = Global.SCROLL_SPEED / 100.0
+			slider.value = Global.scroll_speed / 100.0
 
 
 func _on_audio_pressed()->void :
@@ -46,4 +46,4 @@ func _on_go_main_pressed()->void :
 
 
 func _on_scrool_speed_drag_ended(value_changed:bool)->void :
-	Global.SCROLL_SPEED = slider.value * 100.0
+	Global.scroll_speed = slider.value * 100.0

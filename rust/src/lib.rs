@@ -1,81 +1,38 @@
+mod bpm_time;
 mod conductor;
+mod global;
 mod note;
 mod note_data;
+mod song_data;
+use global::Global;
 use godot::{
-    classes::RefCounted,
-    init::{gdextension, ExtensionLibrary},
-    obj::{Base, Gd},
-    register::{godot_api, GodotClass},
+    builtin::StringName,
+    classes::Engine,
+    init::{gdextension, ExtensionLibrary, InitLevel},
+    obj::NewAlloc,
 };
-
-#[derive(GodotClass)]
-#[class(init, base=RefCounted)]
-pub struct BpmTime {
-    base: Base<RefCounted>,
-    amount: f64,
-    bpm: f64,
-}
-
-#[godot_api]
-impl BpmTime {
-    #[func]
-    pub fn new_from_seconds(bpm: f64, seconds: f64) -> Gd<Self> {
-        let amount = seconds * (bpm / 60.0);
-        Gd::from_init_fn(|base| Self { base, amount, bpm })
-    }
-
-    #[func]
-    pub fn get_time_in_seconds(&self) -> f64 {
-        (60.0 / self.bpm) * self.amount
-    }
-
-    #[func]
-    pub fn get_time_in_minutes(&self) -> f64 {
-        self.bpm * self.amount
-    }
-
-    #[func]
-    pub fn get_time_in_beats(&self) -> f64 {
-        self.amount
-    }
-
-    #[func]
-    pub fn is_greater_than(&self, other: Gd<BpmTime>) -> bool {
-        self.get_time_in_seconds() > other.bind().get_time_in_seconds()
-    }
-
-    #[func]
-    pub fn is_equal_to(&self, other: Gd<BpmTime>) -> bool {
-        self.get_time_in_seconds() == other.bind().get_time_in_seconds()
-    }
-
-    #[func]
-    pub fn is_lesser_than(&self, other: Gd<BpmTime>) -> bool {
-        self.get_time_in_seconds() < other.bind().get_time_in_seconds()
-    }
-}
-
-impl PartialEq for BpmTime {
-    fn eq(&self, other: &Self) -> bool {
-        if self.bpm == other.bpm {
-            self.amount == other.amount
-        } else {
-            false
-        }
-    }
-}
-
-impl PartialOrd for BpmTime {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        if self.bpm == other.bpm {
-            self.bpm.partial_cmp(&other.bpm)
-        } else {
-            None
-        }
-    }
-}
 
 struct Moondown;
 
 #[gdextension]
-unsafe impl ExtensionLibrary for Moondown {}
+unsafe impl ExtensionLibrary for Moondown {
+    fn on_level_init(level: InitLevel) {
+        if level == InitLevel::Scene {
+            Engine::singleton().register_singleton("Global".into(), Global::new_alloc())
+        }
+    }
+
+    fn on_level_deinit(level: InitLevel) {
+        if level == InitLevel::Scene {
+            let mut engine = Engine::singleton();
+            let singleton_name: StringName = "Global".into();
+
+            let singleton = engine
+                .get_singleton(singleton_name.clone())
+                .expect("Couldn't retrieve Global singleton");
+
+            engine.unregister_singleton(singleton_name);
+            singleton.free()
+        }
+    }
+}

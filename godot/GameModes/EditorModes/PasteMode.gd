@@ -25,17 +25,17 @@ func process(delta:float, editor:EditorGameMode):
 		var glane: = note.lane - 1 + selection_cursor
 
 		child.position.x = 100 * wrapi(glane, - 1, 2) + (preview_display.size.x / 2.0) - 32
-		child.position.y = note.start_beat_number * - Global.SCROLL_SPEED - 32
+		child.position.y = note.start_beat_number * - Global.scroll_speed - 32
 		if note.is_sustain() and child.get_child_count() == 0:
 			var trail: = TextureRect.new()
 			trail.texture = preload("res://Sprites/Sustain1.png")
-			trail.scale.y = (note.end_beat_number - note.start_beat_number) * Global.SCROLL_SPEED / 64.0
-			trail.position.y = (note.end_beat_number - note.start_beat_number) * - Global.SCROLL_SPEED
+			trail.scale.y = (note.end_beat_number - note.start_beat_number) * Global.scroll_speed / 64.0
+			trail.position.y = (note.end_beat_number - note.start_beat_number) * - Global.scroll_speed
 			child.add_child(trail)
 		elif not note.is_sustain() and child.get_child_count() > 0:
 			child.get_child(0).free()
 	
-	preview_display.position.y = lerp(preview_display.position.y, (editor.editor_beat - preview_position) * Global.SCROLL_SPEED + 513, 0.2)
+	preview_display.position.y = lerp(preview_display.position.y, (editor.editor_beat - preview_position) * Global.scroll_speed + 513, 0.2)
 
 
 func parse_command(editor:EditorGameMode):

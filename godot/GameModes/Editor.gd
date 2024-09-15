@@ -77,7 +77,7 @@ func process(delta:float)->void :
 	select_mode.process(delta, self)
 	paste_mode.process(delta, self)
 	editor_beat = clamp(editor_beat, 0.0, INF)
-	note_display.position.y = lerp(note_display.position.y, editor_beat * Global.SCROLL_SPEED + 2.0, 0.2)
+	note_display.position.y = lerp(note_display.position.y, editor_beat * Global.scroll_speed + 2.0, 0.2)
 	editor_gridlines.visible = editor_view_grid
 	
 	var max_beat: = 0.0
@@ -90,7 +90,7 @@ func process(delta:float)->void :
 	
 	while editor_grid_separators.size() < separators:
 		var new_separator: = HSeparator.new()
-		new_separator.position.y = - separators * editor_scroll_grid * Global.SCROLL_SPEED
+		new_separator.position.y = - separators * editor_scroll_grid * Global.scroll_speed
 		var new_label: = Label.new()
 		new_label.text = "Null"
 		new_label.position.x -= 10
@@ -106,7 +106,7 @@ func process(delta:float)->void :
 			editor_sustains[lane].visible = false
 		else :
 			editor_sustains[lane].visible = true
-			editor_sustains[lane].position.y = lerp(editor_sustains[lane].position.y, ( - editor_making_sustains[lane].start_beat_number + editor_beat) * Global.SCROLL_SPEED + 555 - 32, 0.2)
+			editor_sustains[lane].position.y = lerp(editor_sustains[lane].position.y, ( - editor_making_sustains[lane].start_beat_number + editor_beat) * Global.scroll_speed + 555 - 32, 0.2)
 			editor_sustain_ends[lane].global_position.y = 481
 			editor_sustain_trails[lane].scale.y = - (editor_sustains[lane].position.y - 480) / 64
 	
@@ -116,7 +116,7 @@ func process(delta:float)->void :
 		editor_grid_forced_update = false
 		for idx in editor_grid_separators.size():
 			var sep:HSeparator = editor_grid_separators[idx]
-			var desire:float = - idx * editor_scroll_grid * Global.SCROLL_SPEED
+			var desire:float = - idx * editor_scroll_grid * Global.scroll_speed
 			sep.position.y = desire
 			sep.size.x = editor_gridlines.size.x
 			match editor_settings_gridnumbers:

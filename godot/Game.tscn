@@ -15,7 +15,7 @@
 [ext_resource type="Script" path="res://GameModes/EditorModes/SelectMode.gd" id="13"]
 [ext_resource type="Script" path="res://GameModes/EditorModes/InsertMode.gd" id="14"]
 [ext_resource type="Script" path="res://GameModes/EditorModes/PasteMode.gd" id="15"]
-[ext_resource type="PackedScene" path="res://SceneTransition.tscn" id="16"]
+[ext_resource type="PackedScene" uid="uid://db1wxsmtvq36d" path="res://SceneTransition.tscn" id="16"]
 
 [sub_resource type="StyleBoxFlat" id="10"]
 bg_color = Color(1, 1, 1, 1)
@@ -462,7 +462,7 @@ libraries = {
 }
 playback_default_blend_time = 1.0
 
-[node name="Panel3" type="Panel" parent="."]
+[node name="Board" type="Panel" parent="."]
 process_mode = 1
 self_modulate = Color(0.156863, 0.0627451, 0.0392157, 1)
 layout_mode = 0
@@ -474,7 +474,7 @@ offset_right = -0.00805664
 offset_bottom = 34.0
 theme_override_styles/panel = SubResource("10")
 
-[node name="Lines" type="Panel" parent="Panel3"]
+[node name="Lines" type="Panel" parent="Board"]
 process_mode = 1
 self_modulate = Color(0.85098, 0.105882, 0.305882, 1)
 layout_mode = 0
@@ -482,28 +482,34 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_override_styles/panel = SubResource("46")
 
-[node name="LightUpA" type="Panel" parent="."]
+[node name="LightUpA" type="Panel" parent="Board"]
 process_mode = 1
 layout_mode = 0
-offset_right = 90.0
-offset_bottom = 555.0
+offset_left = -384.768
+offset_top = 70.0
+offset_right = -294.768
+offset_bottom = 625.0
 theme_override_styles/panel = SubResource("41")
 
-[node name="LightUpB" type="Panel" parent="."]
+[node name="LightUpB" type="Panel" parent="Board"]
 process_mode = 1
 layout_mode = 0
-offset_right = 90.0
-offset_bottom = 555.0
+offset_left = -384.768
+offset_top = 70.0
+offset_right = -294.768
+offset_bottom = 625.0
 theme_override_styles/panel = SubResource("41")
 
-[node name="LightUpC" type="Panel" parent="."]
+[node name="LightUpC" type="Panel" parent="Board"]
 process_mode = 1
 layout_mode = 0
-offset_right = 90.0
-offset_bottom = 555.0
+offset_left = -384.768
+offset_top = 70.0
+offset_right = -294.768
+offset_bottom = 625.0
 theme_override_styles/panel = SubResource("41")
 
-[node name="Panel2" type="Panel" parent="."]
+[node name="LimitLine" type="Panel" parent="."]
 process_mode = 1
 modulate = Color(1, 0.576471, 0.25098, 1)
 layout_mode = 1
@@ -513,7 +519,7 @@ offset_top = 555.0
 offset_bottom = 557.0
 theme_override_styles/panel = SubResource("4")
 
-[node name="Node2D" type="GPUParticles2D" parent="Panel2"]
+[node name="Node2D" type="GPUParticles2D" parent="LimitLine"]
 position = Vector2(354, 0)
 scale = Vector2(0.2, 0.2)
 emitting = false
@@ -523,7 +529,7 @@ texture = ExtResource("5")
 lifetime = 3.0
 speed_scale = 5.0
 
-[node name="Node2D2" type="GPUParticles2D" parent="Panel2"]
+[node name="Node2D2" type="GPUParticles2D" parent="LimitLine"]
 position = Vector2(354, 0)
 scale = Vector2(0.2, 0.2)
 emitting = false
@@ -533,7 +539,7 @@ texture = ExtResource("5")
 lifetime = 3.0
 speed_scale = 5.0
 
-[node name="Node2D3" type="GPUParticles2D" parent="Panel2"]
+[node name="Node2D3" type="GPUParticles2D" parent="LimitLine"]
 position = Vector2(354, 0)
 scale = Vector2(0.2, 0.2)
 emitting = false

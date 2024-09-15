@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://2i26omtf3hb1"]
 
-[ext_resource type="PackedScene" path="res://SceneTransition.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://db1wxsmtvq36d" path="res://SceneTransition.tscn" id="1"]
 [ext_resource type="Script" path="res://SongSelect.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://4chq6x1q04hk" path="res://Sprites/Menu/New Project.png" id="3"]
 [ext_resource type="Texture2D" uid="uid://b63ag17cp76ri" path="res://Sprites/Menu/gridiguess.png" id="4"]
