@@ -1,43 +1,43 @@
 extends Control
 
-onready var note_display := $Notes
-onready var combo_note := $ComboNote
-onready var limit_line := $Panel2
-onready var note_hit_particles := [$Panel2/Node2D, $Panel2/Node2D2, $Panel2/Node2D3]
-onready var note_hit_lights := [$LightUpA, $LightUpB, $LightUpC]
-onready var playfield := $Panel3
-onready var play_lines := $Panel3/Lines
-onready var background := $Background
-onready var background_flash := $Background/Flash
+@onready var note_display := $Notes
+@onready var combo_note := $ComboNote
+@onready var limit_line := $Panel2
+@onready var note_hit_particles := [$Panel2/Node2D, $Panel2/Node2D2, $Panel2/Node2D3]
+@onready var note_hit_lights := [$LightUpA, $LightUpB, $LightUpC]
+@onready var playfield := $Panel3
+@onready var play_lines := $Panel3/Lines
+@onready var background := $Background
+@onready var background_flash := $Background/Flash
 
-onready var music_player := $AudioStreamPlayer
-onready var combo_note_get_sfx := $ComboCoinGet
+@onready var music_player := $AudioStreamPlayer
+@onready var combo_note_get_sfx := $ComboCoinGet
 
-onready var game_hud := $ScoreHUD
+@onready var game_hud := $ScoreHUD
 
-onready var combo_amount_text := $ScoreHUD/Combo
-onready var combo_progress_bar := $ScoreHUD/Combo/ProgressBar
-onready var combo_was := $ScoreHUD/Combo/ThisCombo
-onready var combo_title := $ScoreHUD/Combo/Descriptor
-onready var score_display := $ScoreHUD/Score
+@onready var combo_amount_text := $ScoreHUD/Combo
+@onready var combo_progress_bar := $ScoreHUD/Combo/ProgressBar
+@onready var combo_was := $ScoreHUD/Combo/ThisCombo
+@onready var combo_title := $ScoreHUD/Combo/Descriptor
+@onready var score_display := $ScoreHUD/Score
 
-onready var hit_notification := $ScoreHUD/Label
-onready var hit_notification_disappear := $ScoreHUD/LabelAnim
+@onready var hit_notification := $ScoreHUD/Label
+@onready var hit_notification_disappear := $ScoreHUD/LabelAnim
 
-onready var live_luna_reaction := $ScoreHUD/Luna_react
+@onready var live_luna_reaction := $ScoreHUD/Luna_react
 
-onready var ranking_screen := $Ranking
-onready var ranking_score_display := $Ranking/Score
-onready var ranking_combo_display := $Ranking/Combo
-onready var ranking_combo_title := $Ranking/ComboTitle
-onready var ranking_combo_was := $Ranking/ComboWas
-onready var ranking_song_title := $Ranking/SongName
-onready var ranking_grade := $Ranking/ComboRank
+@onready var ranking_screen := $Ranking
+@onready var ranking_score_display := $Ranking/Score
+@onready var ranking_combo_display := $Ranking/Combo
+@onready var ranking_combo_title := $Ranking/ComboTitle
+@onready var ranking_combo_was := $Ranking/ComboWas
+@onready var ranking_song_title := $Ranking/SongName
+@onready var ranking_grade := $Ranking/ComboRank
 
-onready var editor_hud := $Editor
+@onready var editor_hud := $Editor
 
-onready var game_start_timer := $Timer
-onready var pause_menu := $Pause
+@onready var game_start_timer := $Timer
+@onready var pause_menu := $Pause
 
 var conductor: Conductor = Conductor.new()
 var last_beat := 0.0
@@ -109,8 +109,8 @@ func _ready() -> void:
 		setup_note_nodes(conductor.notes[2])
 		editor_hud.editor_notes.clear()
 		disable_everything()
-		conductor.connect("beat_plus_offset_happened", self, "_on_beat_plus_offset_happened")
-		conductor.connect("beat_happened", self, "_on_beat_happened")
+		conductor.connect("beat_plus_offset_happened", Callable(self, "_on_beat_plus_offset_happened"))
+		conductor.connect("beat_happened", Callable(self, "_on_beat_happened"))
 		game_start_timer.stop()
 		editor = true
 
@@ -132,7 +132,7 @@ func _process(delta: float) -> void:
 			conductor.notes[0].clear()
 			conductor.notes[2].clear()
 			conductor.notes[1].clear()
-			if editor_hud.editor_notes.empty():
+			if editor_hud.editor_notes.is_empty():
 				read_level_file()
 			else:
 				conductor.notes[0] = editor_hud.editor_notes[0]
@@ -179,15 +179,18 @@ func process_game(delta: float) -> void:
 	pause_menu.visible = get_tree().paused
 	
 	note_hit_lights[0].visible = Input.is_action_pressed("button1")
+	note_hit_lights[0].position.x = -100 + (get_viewport_rect().size.x / 2.0) - note_hit_lights[0].size.x / 2.0
 	note_hit_lights[1].visible = Input.is_action_pressed("button2")
+	note_hit_lights[1].position.x = (get_viewport_rect().size.x / 2.0) - note_hit_lights[1].size.x / 2.0
 	note_hit_lights[2].visible = Input.is_action_pressed("button3")
+	note_hit_lights[2].position.x = 100 + (get_viewport_rect().size.x / 2.0) - note_hit_lights[2].size.x / 2.0
 	
 	note_hit_particles[0].emitting = Input.is_action_pressed("button1")
-	note_hit_particles[0].position.x = note_hit_lights[0].rect_position.x + note_hit_lights[0].rect_size.x * 0.5
+	note_hit_particles[0].position.x = -100 + (get_viewport_rect().size.x / 2.0)
 	note_hit_particles[1].emitting = Input.is_action_pressed("button2")
-	note_hit_particles[1].position.x = note_hit_lights[1].rect_position.x + note_hit_lights[1].rect_size.x * 0.5
+	note_hit_particles[1].position.x = (get_viewport_rect().size.x / 2.0)
 	note_hit_particles[2].emitting = Input.is_action_pressed("button3")
-	note_hit_particles[2].position.x = note_hit_lights[2].rect_position.x + note_hit_lights[2].rect_size.x * 0.5
+	note_hit_particles[2].position.x = 100 + (get_viewport_rect().size.x / 2.0)
 	
 	if get_tree().paused:
 		if Input.is_action_just_pressed("button1") and not editor_hud.changes_done:
@@ -195,7 +198,7 @@ func process_game(delta: float) -> void:
 		elif Input.is_action_just_pressed("button2"):
 			pass
 		elif Input.is_action_just_pressed("button3"):
-			$SceneExit.change_scene_to("res://SongSelect.tscn")
+			$SceneExit.change_scene_to_packed("res://SongSelect.tscn")
 	else:
 		if Input.is_action_just_pressed("button1"):
 			playthrough_data.append([conductor.song_position().get_time_in_seconds(), "A"])
@@ -216,12 +219,12 @@ func process_game(delta: float) -> void:
 		if Input.is_action_just_pressed("button1"):
 			get_tree().reload_current_scene()
 		if Input.is_action_just_pressed("button3"):
-			$SceneExit.change_scene_to("res://SongSelect.tscn")
+			$SceneExit.change_scene_to_packed("res://SongSelect.tscn")
 		if Global.using_editor:
 			Input.action_press("editlevel")
 			return
 		ranking_screen.visible = true
-		ranking_combo_display.text = "x" + highest_combo as String
+		ranking_combo_display.text = "x" + str(highest_combo)
 		ranking_combo_title.text = get_combo_title(highest_combo)
 		ranking_song_title.text = Global.song_data.song_name
 		var peppino := false
@@ -258,6 +261,12 @@ func process_game(delta: float) -> void:
 	
 	conductor.process()
 	
+	if is_instance_valid(previous_left_note):
+		previous_left_note = null
+	if is_instance_valid(previous_middle_note):
+		previous_middle_note = null
+	if is_instance_valid(previous_right_note):
+		previous_right_note = null
 	var lout = active_note_setup(conductor.notes[0], previous_left_beat, previous_left_note)
 	previous_left_beat = lout[0]
 	previous_left_note = lout[1]
@@ -288,12 +297,12 @@ func process_game(delta: float) -> void:
 			combo_was.text = "that combo was..."
 			hit_notification.text = "Super F!"
 	
-	var combo_should_y = -combo_timer_goal / conductor.crotchet * Global.SCROLL_SPEED + 513 + conductor.song_position().get_time_in_beats() * Global.SCROLL_SPEED - combo_note.rect_size.y / 2.0
-	if combo_note.rect_position.y < combo_should_y:
-		combo_note.rect_position.y = combo_should_y
+	var combo_should_y = -combo_timer_goal / conductor.crotchet * Global.SCROLL_SPEED + 555 + conductor.song_position().get_time_in_beats() * Global.SCROLL_SPEED - combo_note.size.y / 2.0
+	if combo_note.position.y < combo_should_y:
+		combo_note.position.y = combo_should_y
 	else:
-		combo_note.rect_position.y = lerp(combo_note.rect_position.y, combo_should_y, 0.3)
-	combo_note.rect_size.y = (Global.SCROLL_SPEED / conductor.crotchet) * 0.1 * combo_timer_precision
+		combo_note.position.y = lerp(combo_note.position.y, combo_should_y, 0.3)
+	combo_note.size.y = (Global.SCROLL_SPEED / conductor.crotchet) * 0.1 * combo_timer_precision
 	
 	if combo != 0:
 		combo_title.text = get_combo_title(combo)
@@ -318,19 +327,19 @@ func _on_beat_happened(beat_number):
 	tween_background.tween_property(background_flash, "self_modulate:a", max(combo / 50, 0.3), conductor.crotchet * 0.1)
 	tween_background.tween_property(background_flash, "self_modulate:a", 0.2, conductor.crotchet * 0.75)
 	if combo > 0: combo_timer_go_down = true
-	if combo_amount_text.rect_rotation < 0.0:
+	if combo_amount_text.rotation < 0.0:
 		var tween = create_tween()
 		tween.set_parallel(true)
-		tween.tween_property(combo_amount_text, "rect_rotation", 10 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-		tween.tween_property(hit_notification, "rect_rotation", -5 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		tween.tween_property(combo_amount_text, "rotation", 10 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		tween.tween_property(hit_notification, "rotation", -5 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 	else:
 		var tween = create_tween()
 		tween.set_parallel(true)
-		tween.tween_property(combo_amount_text, "rect_rotation", -10 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
-		tween.tween_property(hit_notification, "rect_rotation", 5 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		tween.tween_property(combo_amount_text, "rotation", -10 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
+		tween.tween_property(hit_notification, "rotation", 5 * max(combo, 2) / 50.0, conductor.crotchet).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
 
 func celebrate_beat(beat_time: float, no_miss: bool) -> bool:
-	var imprecision := abs(beat_time - last_input_time)
+	var imprecision :float = abs(beat_time - last_input_time)
 	
 	if imprecision < 0.05 * combo_timer_precision:
 		combo_timer_precision *= 0.98
@@ -362,8 +371,8 @@ func celebrate_beat(beat_time: float, no_miss: bool) -> bool:
 	return false
 
 func _on_Timer_timeout() -> void:
-	conductor.connect("beat_plus_offset_happened", self, "_on_beat_plus_offset_happened")
-	conductor.connect("beat_happened", self, "_on_beat_happened")
+	conductor.connect("beat_plus_offset_happened", Callable(self, "_on_beat_plus_offset_happened"))
+	conductor.connect("beat_happened", Callable(self, "_on_beat_happened"))
 	music_player.play(conductor.crotchet * 0)
 	song_started = true
 
@@ -478,23 +487,22 @@ func get_combo_title(combo_input: int) -> String:
 	return combo_title
 
 func read_level_file():
-	var level_file := File.new()
-	if level_file.file_exists(Global.song_data.path + "/level.txt") and not level_file.file_exists(Global.song_data.path + "/level.luna"):
-		var dict := read_level_old(level_file)
-		level_file.open(Global.song_data.path + "/level.luna", File.WRITE)
-		level_file.store_string(JSON.print(dict))
+	if FileAccess.file_exists(Global.song_data.path + "/level.txt") and not FileAccess.file_exists(Global.song_data.path + "/level.luna"):
+		var dict := read_level_old()
+		var level_file = FileAccess.open(Global.song_data.path + "/level.luna", FileAccess.WRITE)
+		level_file.store_string(JSON.stringify(dict))
 		level_file.close()
 	
-	if level_file.file_exists(Global.song_data.path + "/level.luna"):
-		read_level(level_file)
+	if FileAccess.file_exists(Global.song_data.path + "/level.luna"):
+		read_level()
 
-func read_level_old(level_file: File) -> Dictionary:
+func read_level_old() -> Dictionary:
 	var data := {
 		"file_ver": 0,
 		"notes":[],
 	}
 	
-	level_file.open(Global.song_data.path + "/level.txt", File.READ)
+	var level_file = FileAccess.open(Global.song_data.path + "/level.txt", FileAccess.READ)
 	var current_line := level_file.get_line()
 	var right_sustain: NoteData = null
 	var middle_sustain: NoteData = null
@@ -555,25 +563,27 @@ func read_level_old(level_file: File) -> Dictionary:
 	level_file.close()
 	return data
 
-func read_level(level_file: File):
-	level_file.open(Global.song_data.path + "/level.luna", File.READ)
+func read_level():
+	var level_file = FileAccess.open(Global.song_data.path + "/level.luna", FileAccess.READ)
 	var text := level_file.get_as_text()
-	var json_result := JSON.parse(text)
-	if json_result.error == OK:
-		var data: Dictionary = json_result.result
+	var test_json_conv = JSON.new()
+	var error = test_json_conv.parse(text)
+	if error == OK:
+		var json_result :Dictionary = test_json_conv.get_data()
+		var data: Dictionary = json_result
 		for object in data.notes:
 			if object.type == NoteData.TYPE:
 				var note_data := NoteData.from_dict(object)
 				conductor.notes[note_data.lane].append(note_data)
 	else:
-		push_error(json_result.error_string)
+		push_error(test_json_conv.get_error_message())
 
 func setup_note_nodes(note_array: Array):
 	var previous_beat_time = -1.0
 	var previous_note_node = null
 	
 	for note_data in note_array:
-		var new_note_node = preload ("res://Note.tscn").instance()
+		var new_note_node = preload ("res://Note.tscn").instantiate()
 		new_note_node.hit_beat_number = note_data.start_beat_number
 		if note_data.is_sustain():
 			new_note_node.release_beat_number = note_data.end_beat_number
@@ -626,15 +636,15 @@ func process_combo_timer():
 
 func get_max_beat() -> float:
 	var max_beat := 0.0
-	if not editor_hud.editor_notes[2].empty():
+	if not editor_hud.editor_notes[2].is_empty():
 		max_beat = editor_hud.editor_notes[2][ - 1].start_beat_number
 		if editor_hud.editor_notes[2][ - 1].is_sustain():
 			max_beat = editor_hud.editor_notes[2][ - 1].end_beat_number
-	if not editor_hud.editor_notes[1].empty():
+	if not editor_hud.editor_notes[1].is_empty():
 		max_beat = max(max_beat, editor_hud.editor_notes[1][ - 1].start_beat_number)
 		if editor_hud.editor_notes[1][ - 1].is_sustain():
 			max_beat = editor_hud.editor_notes[1][ - 1].end_beat_number
-	if not editor_hud.editor_notes[0].empty():
+	if not editor_hud.editor_notes[0].is_empty():
 		max_beat = max(max_beat, editor_hud.editor_notes[0][ - 1].start_beat_number)
 		if editor_hud.editor_notes[0][ - 1].is_sustain():
 			max_beat = editor_hud.editor_notes[0][ - 1].end_beat_number
@@ -643,14 +653,14 @@ func get_max_beat() -> float:
 func active_note_setup(array: Array, previous_beat: float, previous_node: Node):
 	var previous_beat_time := previous_beat
 	var previous_note_node = previous_node
-	while not array.empty():
+	while not array.is_empty():
 		var note_data = array[0]
 		if (note_data.start_beat_number - conductor.song_position().get_time_in_beats()) > 5:
 			break
 		array.pop_front()
 		if (note_data.start_beat_number - conductor.song_position().get_time_in_beats()) < - 1:
 			continue
-		var new_note_node = preload ("res://Note.tscn").instance()
+		var new_note_node = preload ("res://Note.tscn").instantiate()
 		new_note_node.hit_beat_number = note_data.start_beat_number
 		if note_data.is_sustain():
 			new_note_node.release_beat_number = note_data.end_beat_number
@@ -659,6 +669,8 @@ func active_note_setup(array: Array, previous_beat: float, previous_node: Node):
 		new_note_node.conductor = conductor
 		new_note_node.seconds_from_previous = previous_beat_time * conductor.crotchet
 		new_note_node.modulate = Global.song_data.color2
+		
+		print(Global.song_data.color2)
 		if randi() % 2 == 0:
 			new_note_node.modulate = Global.song_data.color1
 		note_display.add_child(new_note_node)
@@ -677,7 +689,7 @@ func _on_song_finished() -> void:
 	song_ended = true
 
 func disable_everything() -> void:
-	combo_note.rect_position.y = -100
+	combo_note.position.y = -100
 	for idx in note_hit_lights.size():
 		note_hit_lights[idx].visible = false
 		note_hit_particles[idx].emitting = false

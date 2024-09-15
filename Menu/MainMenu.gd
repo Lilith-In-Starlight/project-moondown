@@ -2,7 +2,7 @@ extends Control
 
 signal menu_change_request(to)
 
-onready var song_list:Control = $"../Songs/SongList"
+@onready var song_list:Control = $"../Songs/SongList"
 
 
 func _on_play_pressed()->void :

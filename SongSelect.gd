@@ -7,7 +7,7 @@ var total_songs: = - 1
 var song_list: = []
 
 var current_menu: = "main"
-var menu_tween:SceneTreeTween
+var menu_tween:Tween
 
 
 func _ready()->void :
@@ -30,25 +30,25 @@ func _input(event:InputEvent)->void :
 func load_songs(song_directory:String)->Array:
 	var return_value: = []
 	
-	var songs_dir: = Directory.new()
-	if not songs_dir.dir_exists(song_directory):
-		songs_dir.make_dir(song_directory)
-	songs_dir.open(song_directory)
-	songs_dir.list_dir_begin(true, true)
+	if not DirAccess.dir_exists_absolute(song_directory):
+		DirAccess.make_dir_absolute(song_directory)
+	var songs_dir = DirAccess.open(song_directory)
+	songs_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 	
 	var current_file: = songs_dir.get_next()
 	
 	while current_file != "":
 		if songs_dir.current_is_dir():
 			var new_song_data: = SongData.new()
-			var data_file: = File.new()
-			if data_file.file_exists(song_directory + "/%s/data.txt" % current_file) and (data_file.file_exists(song_directory + "/%s/level.txt" % current_file) or data_file.file_exists(song_directory + "/%s/level.luna" % current_file)):
-				data_file.open(song_directory + "/%s/data.txt" % current_file, File.READ)
-				var jsonres: = JSON.parse(data_file.get_as_text())
-				if jsonres.error != OK:
-					push_error("Failed to read file %s: %s at line %s" % [current_file, jsonres.error_string, jsonres.error_line])
-				else :
-					new_song_data.set_from_dict(jsonres.result)
+			if FileAccess.file_exists(song_directory + "/%s/data.txt" % current_file) and (FileAccess.file_exists(song_directory + "/%s/level.txt" % current_file) or FileAccess.file_exists(song_directory + "/%s/level.luna" % current_file)):
+				var data_file = FileAccess.open(song_directory + "/%s/data.txt" % current_file, FileAccess.READ)
+				var test_json_conv = JSON.new()
+				var error = test_json_conv.parse(data_file.get_as_text())
+				if error != OK:
+					push_error("Failed to read file %s: %s at line %s" % [current_file, test_json_conv.get_error_message(), test_json_conv.get_error_line()])
+				else:
+					var jsonres: Dictionary = test_json_conv.get_data()
+					new_song_data.set_from_dict(jsonres)
 					new_song_data.path = song_directory + "/" + current_file
 					return_value.append(new_song_data)
 					if song_directory.begins_with("user://"):
@@ -123,4 +123,4 @@ func _on_menu_change_requested(to:String)->void :
 func _on_play_song_requested(songid)->void :
 	Global.song_data = song_list[song]
 	Global.using_editor = $Songs.use_editor
-	$SceneExit.change_scene_to("res://Game.tscn")
+	$SceneExit.change_scene_to_packed("res://Game.tscn")

@@ -1,7 +1,7 @@
 extends Panel
 
-onready var table := $HelpWindow/HSplitContainer/Contents
-onready var text := $HelpWindow/HSplitContainer/Help
+@onready var table := $HelpWindow/HSplitContainer/Contents
+@onready var text := $HelpWindow/HSplitContainer/Help
 
 var beginning: TreeItem
 var setting_up: TreeItem
@@ -29,37 +29,31 @@ func _on_contents_item_selected() -> void:
 	var selected: TreeItem = table.get_selected()
 	text.clear()
 	if selected == beginning:
-		var file := File.new()
-		file.open("res://editorman/introduction.txt", File.READ)
-		text.bbcode_text = file.get_as_text()
+		var file := FileAccess.open("res://editorman/introduction.txt", FileAccess.READ)
+		text.text = file.get_as_text()
 		file.close()
 	elif selected == setting_up:
-		var file := File.new()
-		file.open("res://editorman/song_setup.txt", File.READ)
-		text.bbcode_text = file.get_as_text()
+		var file := FileAccess.open("res://editorman/song_setup.txt", FileAccess.READ)
+		text.text = file.get_as_text()
 		file.close()
 	elif selected == adding_notes:
-		var file := File.new()
-		file.open("res://editorman/level_creation.txt", File.READ)
-		text.bbcode_text = file.get_as_text()
+		var file := FileAccess.open("res://editorman/level_creation.txt", FileAccess.READ)
+		text.text = file.get_as_text()
 		file.close()
 	elif selected == select_mode:
-		var file := File.new()
-		file.open("res://editorman/select_mode.txt", File.READ)
-		text.bbcode_text = file.get_as_text()
+		var file := FileAccess.open("res://editorman/select_mode.txt", FileAccess.READ)
+		text.text = file.get_as_text()
 		file.close()
 	elif selected == keybinds:
-		var file := File.new()
-		file.open("res://editorman/keybinds.txt", File.READ)
-		text.bbcode_text = file.get_as_text()
+		var file := FileAccess.open("res://editorman/keybinds.txt", FileAccess.READ)
+		text.text = file.get_as_text()
 		file.close()
 	elif selected == commands:
-		var file := File.new()
-		file.open("res://editorman/commands.txt", File.READ)
-		text.bbcode_text = file.get_as_text()
+		var file := FileAccess.open("res://editorman/commands.txt", FileAccess.READ)
+		text.text = file.get_as_text()
 		file.close()
 
-	var custom_formatted = text.bbcode_text
+	var custom_formatted = text.text
 	custom_formatted = custom_formatted.replace("[code]", "[code][color=#c53c00]")
 	custom_formatted = custom_formatted.replace("[/code]", "[/color][/code]")
-	text.bbcode_text = custom_formatted
+	text.text = custom_formatted

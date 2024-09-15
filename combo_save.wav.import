@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/combo_save.wav-9279ce8cfc99f1cfe95dddf14fb5d717.sample"
+type="AudioStreamWAV"
+uid="uid://jcxswow5rwv"
+path="res://.godot/imported/combo_save.wav-9279ce8cfc99f1cfe95dddf14fb5d717.sample"
 
 [deps]
 
 source_file="res://combo_save.wav"
-dest_files=[ "res://.import/combo_save.wav-9279ce8cfc99f1cfe95dddf14fb5d717.sample" ]
+dest_files=["res://.godot/imported/combo_save.wav-9279ce8cfc99f1cfe95dddf14fb5d717.sample"]
 
 [params]
 

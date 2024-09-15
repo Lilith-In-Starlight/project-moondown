@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/transition.wav-7c56eb614de886ff74d65bfb8e7c3ad8.sample"
+type="AudioStreamWAV"
+uid="uid://t3x8r3e4b28d"
+path="res://.godot/imported/transition.wav-7c56eb614de886ff74d65bfb8e7c3ad8.sample"
 
 [deps]
 
 source_file="res://transition.wav"
-dest_files=[ "res://.import/transition.wav-7c56eb614de886ff74d65bfb8e7c3ad8.sample" ]
+dest_files=["res://.godot/imported/transition.wav-7c56eb614de886ff74d65bfb8e7c3ad8.sample"]
 
 [params]
 

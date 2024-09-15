@@ -5,7 +5,7 @@ signal play_song_request(songid)
 
 
 const DISPLAY: = preload("res://Menu/SongDisplay.tscn")
-onready var song_list:Control = $SongList
+@onready var song_list:Control = $SongList
 
 var songs: = 0
 var csong: = 0
@@ -13,13 +13,13 @@ var use_editor: = false
 
 var non_editable_places: = []
 
-var tween:SceneTreeTween
+var tween:Tween
 
 
 func add_display(song_data, play_data)->void :
-	var nd: = DISPLAY.instance()
+	var nd: = DISPLAY.instantiate()
 	song_list.add_child(nd)
-	nd.rect_position.x = nd.rect_size.x * (songs)
+	nd.position.x = nd.size.x * (songs)
 	nd.set_song_data(song_data)
 	nd.set_play_data(play_data)
 	if not song_data.editable and not OS.has_feature("editor"):
@@ -42,7 +42,7 @@ func update_display():
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(song_list, "rect_position:x", - csong * song_list.rect_size.x + 198, 0.3)
+	tween.tween_property(song_list, "position:x", - csong * song_list.size.x + 198, 0.3)
 
 func _on_return_pressed()->void :
 	emit_signal("menu_change_request", "main")

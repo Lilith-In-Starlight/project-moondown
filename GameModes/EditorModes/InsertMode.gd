@@ -28,12 +28,12 @@ func parse_command(editor:EditorGameMode):
 						emit_signal("set_scroll_speed_request", Fraction.new(1.0, 8.0))
 						emit_signal("align_cursor_to_grid_request")
 					KEY_J:
-						if current_parse.empty():
+						if current_parse.is_empty():
 							emit_signal("scroll_request", - 0.25)
 						elif Util.is_valid_fraction(current_parse):
 							emit_signal("arbitrary_scroll_request", - Util.frac_to_float(current_parse))
 					KEY_K:
-						if current_parse.empty():
+						if current_parse.is_empty():
 							emit_signal("scroll_request", 0.25)
 						elif Util.is_valid_fraction(current_parse):
 							emit_signal("arbitrary_scroll_request", Util.frac_to_float(current_parse))
@@ -57,24 +57,24 @@ func parse_command(editor:EditorGameMode):
 				match input:
 					KEY_K:
 						clear = true
-						if current_parse.empty() or current_parse.is_valid_integer():
-							var amt: = 1 if current_parse.empty() else current_parse as int
+						if current_parse.is_empty() or current_parse.is_valid_int():
+							var amt: = 1 if current_parse.is_empty() else (current_parse as int)
 							emit_signal("scroll_request", amt)
 					KEY_J:
 						clear = true
-						if current_parse.empty() or current_parse.is_valid_integer():
-							var amt: = 1 if current_parse.empty() else current_parse as int
+						if current_parse.is_empty() or current_parse.is_valid_int():
+							var amt: = 1 if current_parse.is_empty() else (current_parse as int)
 							emit_signal("scroll_request", - amt)
 					KEY_M:
 						clear = true
-						if current_parse.empty() or Util.is_valid_fraction(current_parse):
-							var desired_val: = Fraction.new(1, 1) if current_parse.empty() else Util.frac_to_frac(current_parse)
+						if current_parse.is_empty() or Util.is_valid_fraction(current_parse):
+							var desired_val: = Fraction.new(1, 1) if current_parse.is_empty() else Util.frac_to_frac(current_parse)
 							if desired_val == null:
 								desired_val = Fraction.new(1, 1)
 							emit_signal("set_scroll_speed_request", desired_val)
 					KEY_N:
 						clear = true
-						if not current_parse.empty() and Util.is_valid_fraction(current_parse):
+						if not current_parse.is_empty() and Util.is_valid_fraction(current_parse):
 							var desired_val = Util.frac_to_frac(current_parse)
 							if desired_val != null:
 								emit_signal("set_gridsize_request", desired_val)
@@ -94,13 +94,13 @@ func parse_command(editor:EditorGameMode):
 							emit_signal("scroll_to_request", destination)
 					KEY_L:
 						clear = true
-						if Util.is_valid_fraction(current_parse) or current_parse.empty():
-							var amt: = INF if current_parse.empty() else Util.frac_to_float(current_parse)
+						if Util.is_valid_fraction(current_parse) or current_parse.is_empty():
+							var amt: = INF if current_parse.is_empty() else Util.frac_to_float(current_parse)
 							emit_signal("raise_request", amt)
 					KEY_H:
 						clear = true
-						if Util.is_valid_fraction(current_parse) or current_parse.empty():
-							var amt: = INF if current_parse.empty() else Util.frac_to_float(current_parse)
+						if Util.is_valid_fraction(current_parse) or current_parse.is_empty():
+							var amt: = INF if current_parse.is_empty() else Util.frac_to_float(current_parse)
 							emit_signal("raise_request", - amt)
 					
 					KEY_V:

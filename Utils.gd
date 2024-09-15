@@ -29,11 +29,11 @@ static func frac_to_float(s:String)->float:
 	elif split.size() == 2:
 		if split[1] as float == 0:
 			return NAN
-		return split[0] as float / split[1] as float
+		return (split[0] as float) / (split[1] as float)
 	elif split.size() == 3:
 		if split[2] as float == 0:
 			return NAN
-		return split[0] as float + (split[1] as float / split[2] as float)
+		return (split[0] as float) + ((split[1] as float) / (split[2] as float))
 	else :
 		return NAN
 

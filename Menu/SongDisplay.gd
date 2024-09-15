@@ -10,7 +10,7 @@ func set_song_data(sd:SongData)->void :
 
 
 func set_play_data(pd)->void :
-	if pd.empty():
+	if pd.is_empty():
 		$SongDisplay / HighscoreLabel.text = "Unplayed!"
 		return 
 	$SongDisplay / HighscoreLabel.text = "%s | x%s" % [pd.score, pd.combo]

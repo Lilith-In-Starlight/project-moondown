@@ -32,8 +32,7 @@ func load_data():
 
 
 func get_song_access_hash(song_path):
-	var level_file := File.new()
-	var level_data := level_file.get_sha256(song_path + "/level.txt")
-	var data_data := level_file.get_sha256(song_path + "/data.txt")
-	var song_data = level_file.get_sha256(song_path + "/song.mp3")
+	var level_data := FileAccess.get_sha256(song_path + "/level.txt")
+	var data_data := FileAccess.get_sha256(song_path + "/data.txt")
+	var song_data = FileAccess.get_sha256(song_path + "/song.mp3")
 	return str(level_data) + str(data_data) + str(hash(song_data))

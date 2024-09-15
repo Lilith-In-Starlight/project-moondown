@@ -2,14 +2,18 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/Dead+City.mp3-73914980941f079a1896722a69658f64.mp3str"
+uid="uid://bkub5v77p6otv"
+path="res://.godot/imported/Dead+City.mp3-73914980941f079a1896722a69658f64.mp3str"
 
 [deps]
 
 source_file="res://Dead+City.mp3"
-dest_files=[ "res://.import/Dead+City.mp3-73914980941f079a1896722a69658f64.mp3str" ]
+dest_files=["res://.godot/imported/Dead+City.mp3-73914980941f079a1896722a69658f64.mp3str"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

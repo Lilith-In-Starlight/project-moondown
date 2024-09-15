@@ -2,14 +2,18 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/song.mp3-bf017831e4ec11aaf973eb2fb91351d1.mp3str"
+uid="uid://cbalf1n7d8b0s"
+path="res://.godot/imported/song.mp3-bf017831e4ec11aaf973eb2fb91351d1.mp3str"
 
 [deps]
 
 source_file="res://songs/theboundandroid_8_to_6/song.mp3"
-dest_files=[ "res://.import/song.mp3-bf017831e4ec11aaf973eb2fb91351d1.mp3str" ]
+dest_files=["res://.godot/imported/song.mp3-bf017831e4ec11aaf973eb2fb91351d1.mp3str"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

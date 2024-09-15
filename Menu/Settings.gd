@@ -5,10 +5,10 @@ signal menu_change_request(to)
 
 var current_menu: = "main"
 
-onready var main:Control = $Main
-onready var audio:Control = $Audio
-onready var gameplay:Control = $Gameplay
-onready var slider:HSlider = $Gameplay / Options / ScrollOption / Slider
+@onready var main:Control = $Main
+@onready var audio:Control = $Audio
+@onready var gameplay:Control = $Gameplay
+@onready var slider:HSlider = $Gameplay / Options / ScrollOption / Slider
 
 
 

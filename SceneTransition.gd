@@ -4,14 +4,14 @@ const time: = 0.3
 
 var closedness: = 3.0
 
-var transition:SceneTreeTween
+var transition:Tween
 
 var opened: = false
 
 var t: = ""
 
 
-func change_scene_to(to:String):
+func change_scene_to_packed(to:String):
 	if transition != null and transition.is_valid():
 		transition.kill()
 	visible = true
@@ -19,7 +19,7 @@ func change_scene_to(to:String):
 	transition.set_trans(Tween.TRANS_QUAD)
 	transition.set_ease(Tween.EASE_IN)
 	transition.tween_property(self, "closedness", 3.0, time)
-	transition.connect("finished", self, "_on_change_anim_finished")
+	transition.connect("finished", Callable(self, "_on_change_anim_finished"))
 	t = to
 
 
@@ -31,7 +31,7 @@ func reload_current_scene():
 	transition.set_trans(Tween.TRANS_QUAD)
 	transition.set_ease(Tween.EASE_IN)
 	transition.tween_property(self, "closedness", 3.0, time)
-	transition.connect("finished", self, "_on_reload_anim_finished")
+	transition.connect("finished", Callable(self, "_on_reload_anim_finished"))
 
 
 func quit():
@@ -42,13 +42,13 @@ func quit():
 	transition.set_trans(Tween.TRANS_QUAD)
 	transition.set_ease(Tween.EASE_IN)
 	transition.tween_property(self, "closedness", 3.0, time)
-	transition.connect("finished", self, "_on_quit_anim_finished")
+	transition.connect("finished", Callable(self, "_on_quit_anim_finished"))
 
 
 func _process(delta:float)->void :
-	$Coverage.material.set_shader_param("cover_progress", closedness)
+	$Coverage.material.set_shader_parameter("cover_progress", closedness)
 	if not opened:
-		yield (VisualServer, "frame_post_draw")
+		await RenderingServer.frame_post_draw
 		transition = create_tween()
 		transition.set_trans(Tween.TRANS_QUAD)
 		transition.set_ease(Tween.EASE_IN)
@@ -57,19 +57,20 @@ func _process(delta:float)->void :
 		opened = true
 
 func _on_change_anim_finished():
-	yield (VisualServer, "frame_post_draw")
-	yield (get_tree().create_timer(0.2), "timeout")
-	get_tree().change_scene(t)
+	await RenderingServer.frame_post_draw
+	await get_tree().create_timer(0.2).timeout
 	get_tree().paused = false
+	get_tree().change_scene_to_file(t)
 
 
 func _on_reload_anim_finished():
-	yield (VisualServer, "frame_post_draw")
-	yield (get_tree().create_timer(0.2), "timeout")
-	get_tree().reload_current_scene()
+	await RenderingServer.frame_post_draw
+	await get_tree().create_timer(0.2).timeout
 	get_tree().paused = false
+	get_tree().reload_current_scene()
 
 func _on_quit_anim_finished():
-	yield (VisualServer, "frame_post_draw")
-	yield (get_tree().create_timer(0.2), "timeout")
+	await RenderingServer.frame_post_draw
+	await get_tree().create_timer(0.2).timeout
+	get_tree().paused = false
 	get_tree().quit()

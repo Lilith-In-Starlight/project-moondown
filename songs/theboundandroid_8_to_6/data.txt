@@ -2,18 +2,5 @@
 	"title": "8 to 6",
 	"author": "theboundandroid",
 	"bpm": 175,
-	"difficulty": -1,
-	"style": {
-		"bg_color": "ff4a2025",
-		"note_colors": [
-			"ffff7a1b",
-			"ffff4879"
-		],
-		"combo_note_color": "ffffb300",
-		"playfield": {
-			"bg_color": "ff4a2025",
-			"lines": "ffd91b4e",
-			"last_line": "ffffb300"
-		}
-	}
+	"difficulty": 5,
 }

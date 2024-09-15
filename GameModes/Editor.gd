@@ -7,21 +7,21 @@ var in_editor: = 0
 var editor_mode: = 0
 var changes_done: = false
 
-onready var insert_mode: = $InsertMode
-onready var select_mode: = $SelectMode
-onready var paste_mode: = $PasteMode
+@onready var insert_mode: = $InsertMode
+@onready var select_mode: = $SelectMode
+@onready var paste_mode: = $PasteMode
 
-onready var music_player: = $"../AudioStreamPlayer"
-onready var editor_gridlines: = $Beats
-onready var editor_sustains: = [$Sustains / Note1, $Sustains / Note2, $Sustains / Note3]
-onready var editor_sustain_trails: = [$Sustains / Note1 / Sustain, $Sustains / Note2 / Sustain, $Sustains / Note3 / Sustain]
-onready var editor_sustain_ends: = [$Sustains / Note1 / End, $Sustains / Note2 / End, $Sustains / Note3 / End]
-onready var quick_command_display: = $QuickCommand
-onready var command_line: = $Command
+@onready var music_player: = $"../AudioStreamPlayer"
+@onready var editor_gridlines: = $Beats
+@onready var editor_sustains: = [$Sustains / Note1, $Sustains / Note2, $Sustains / Note3]
+@onready var editor_sustain_trails: = [$Sustains / Note1 / Sustain, $Sustains / Note2 / Sustain, $Sustains / Note3 / Sustain]
+@onready var editor_sustain_ends: = [$Sustains / Note1 / End, $Sustains / Note2 / End, $Sustains / Note3 / End]
+@onready var quick_command_display: = $QuickCommand
+@onready var command_line: = $Command
 
-onready var editor_notifications: = $History
+@onready var editor_notifications: = $History
 
-onready var note_display: = $"../Notes"
+@onready var note_display: = $"../Notes"
 
 var conductor:Conductor = null
 
@@ -70,7 +70,7 @@ func connect_requests(from:Node):
 	connect_request("add_specific_notes_request", from)
 
 func connect_request(signal_name:String, from:Node):
-	from.connect(signal_name, self, "_on_%sed" % signal_name)
+	from.connect(signal_name, Callable(self, "_on_%sed" % signal_name))
 
 
 func process(delta:float)->void :
@@ -81,20 +81,20 @@ func process(delta:float)->void :
 	editor_gridlines.visible = editor_view_grid
 	
 	var max_beat: = 0.0
-	if not conductor.notes[2].empty():max_beat = conductor.notes[2][ - 1].start_beat_number
-	if not conductor.notes[1].empty():max_beat = max(max_beat, conductor.notes[1][ - 1].start_beat_number)
-	if not conductor.notes[0].empty():max_beat = max(max_beat, conductor.notes[0][ - 1].start_beat_number)
+	if not conductor.notes[2].is_empty():max_beat = conductor.notes[2][ - 1].start_beat_number
+	if not conductor.notes[1].is_empty():max_beat = max(max_beat, conductor.notes[1][ - 1].start_beat_number)
+	if not conductor.notes[0].is_empty():max_beat = max(max_beat, conductor.notes[0][ - 1].start_beat_number)
 	
 	var separators: = max_beat / editor_scroll_grid + 10
 	
 	
 	while editor_grid_separators.size() < separators:
 		var new_separator: = HSeparator.new()
-		new_separator.rect_position.y = - separators * editor_scroll_grid * Global.SCROLL_SPEED
+		new_separator.position.y = - separators * editor_scroll_grid * Global.SCROLL_SPEED
 		var new_label: = Label.new()
 		new_label.text = "Null"
-		new_label.rect_position.x -= 10
-		new_label.rect_position.y += 2
+		new_label.position.x -= 10
+		new_label.position.y += 2
 		new_separator.add_child(new_label)
 		editor_grid_separators.append(new_separator)
 	
@@ -106,9 +106,9 @@ func process(delta:float)->void :
 			editor_sustains[lane].visible = false
 		else :
 			editor_sustains[lane].visible = true
-			editor_sustains[lane].rect_position.y = lerp(editor_sustains[lane].rect_position.y, ( - editor_making_sustains[lane].start_beat_number + editor_beat) * Global.SCROLL_SPEED + 513 - 32, 0.2)
-			editor_sustain_ends[lane].rect_global_position.y = 481
-			editor_sustain_trails[lane].rect_scale.y = - (editor_sustains[lane].rect_position.y - 480) / 64
+			editor_sustains[lane].position.y = lerp(editor_sustains[lane].position.y, ( - editor_making_sustains[lane].start_beat_number + editor_beat) * Global.SCROLL_SPEED + 555 - 32, 0.2)
+			editor_sustain_ends[lane].global_position.y = 481
+			editor_sustain_trails[lane].scale.y = - (editor_sustains[lane].position.y - 480) / 64
 	
 	if old_grid_size != editor_scroll_grid or old_max_beat != max_beat or editor_grid_forced_update:
 		old_max_beat = max_beat
@@ -117,8 +117,8 @@ func process(delta:float)->void :
 		for idx in editor_grid_separators.size():
 			var sep:HSeparator = editor_grid_separators[idx]
 			var desire:float = - idx * editor_scroll_grid * Global.SCROLL_SPEED
-			sep.rect_position.y = desire
-			sep.rect_size.x = editor_gridlines.rect_size.x
+			sep.position.y = desire
+			sep.size.x = editor_gridlines.size.x
 			match editor_settings_gridnumbers:
 				1:sep.get_child(0).text = editor_grid_fraction.fmultiplied(idx).as_mixed().as_string()
 				2:sep.get_child(0).text = editor_grid_fraction.fmultiplied(idx).as_fract().as_string()
@@ -129,7 +129,7 @@ func process(delta:float)->void :
 			elif idx >= separators and sep.is_inside_tree():
 				editor_gridlines.remove_child(sep)
 	
-	editor_gridlines.rect_position.y = note_display.position.y + 513 - 2.0
+	editor_gridlines.position.y = note_display.position.y + 555 - 2.0
 	
 	quick_command_display.text = ""
 	
@@ -147,32 +147,32 @@ func _input(event:InputEvent)->void :
 		return 
 	if event is InputEventKey and not event.is_echo() and event.is_pressed():
 		if editor_mode == 0:
-			if not event.shift:
-				editor_command += "%s>" % event.scancode
-			else :
-				editor_command += "S-%s>" % event.scancode
+			if not event.shift_pressed && not event.keycode == KEY_SHIFT:
+				editor_command += "%s>" % event.keycode
+			else:
+				editor_command += "S-%s>" % event.keycode
 			insert_mode.parse_command(self)
 		elif editor_mode == 1:
-			if event.scancode == KEY_ESCAPE:
+			if event.keycode == KEY_ESCAPE:
 				editor_mode = 0
 				command_line.text = ""
 				command_line.release_focus()
-			elif event.scancode == KEY_ENTER:
+			elif event.keycode == KEY_ENTER:
 				parse_commandmode()
 		elif editor_mode == 2:
-			if not event.shift:
-				editor_command += "%s>" % event.scancode
+			if not event.shift_pressed:
+				editor_command += "%s>" % event.keycode
 			else :
-				editor_command += "S-%s>" % event.scancode
+				editor_command += "S-%s>" % event.keycode
 			select_mode.parse_command(self)
 		elif editor_mode == 3:
-			if not event.shift:
-				editor_command += "%s>" % event.scancode
+			if not event.shift_pressed:
+				editor_command += "%s>" % event.keycode
 			else :
-				editor_command += "S-%s>" % event.scancode
+				editor_command += "S-%s>" % event.keycode
 			paste_mode.parse_command(self)
 		elif editor_mode == 4:
-			if event.scancode == KEY_ESCAPE:
+			if event.keycode == KEY_ESCAPE:
 				editor_mode = 0
 				$Help.visible = false
 
@@ -190,14 +190,14 @@ func parse_commandmode():
 			save_level_files()
 		":wq":
 			save_level_files()
-			get_tree().change_scene_to(load("res://SongSelect.tscn"))
+			get_tree().change_scene_to_packed(load("res://SongSelect.tscn"))
 		":q":
 			if changes_done:
 				send_notification("Can't quit with unsaved changes.")
 			else :
-				get_tree().change_scene_to(load("res://SongSelect.tscn"))
+				get_tree().change_scene_to_packed(load("res://SongSelect.tscn"))
 		":q!":
-			get_tree().change_scene_to(load("res://SongSelect.tscn"))
+			get_tree().change_scene_to_packed(load("res://SongSelect.tscn"))
 		":set":
 			if cmd.size() <= 1:
 				send_notification(":set expects a setting and its new value")
@@ -274,12 +274,11 @@ func save_level_files():
 		data.notes.append(i.get_as_dict())
 	for i in conductor.notes[1]:
 		data.notes.append(i.get_as_dict())
-	var save_file: = File.new()
-	save_file.open(Global.song_data.path + "/level.luna", File.WRITE)
-	save_file.store_string(JSON.print(data))
+	var save_file: = FileAccess.open(Global.song_data.path + "/level.luna", FileAccess.WRITE)
+	save_file.store_string(JSON.stringify(data))
 	save_file.close()
-	save_file.open(Global.song_data.path + "/data.txt", File.WRITE)
-	save_file.store_string(JSON.print(Global.song_data.get_as_dict(), "	"))
+	save_file = FileAccess.open(Global.song_data.path + "/data.txt", FileAccess.WRITE)
+	save_file.store_string(JSON.stringify(Global.song_data.get_as_dict(), "	"))
 	save_file.close()
 	send_notification("Saved")
 	changes_done = false
@@ -335,23 +334,23 @@ func set_setting(setting:String, value:String):
 		_:send_notification("Unknown setting %s" % setting)
 
 
-func add_remove_note(array_to:Array, note_data:NoteData)->Array:
-	if array_to.empty():
+func add_remove_note(array_to: Array, note_data:NoteData) -> Array:
+	if array_to.is_empty():
 		array_to.append(note_data)
 	elif note_data.start_beat_number < array_to[0].start_beat_number:
 		array_to.push_front(note_data)
-	elif note_data.start_beat_number > array_to[ - 1].start_beat_number:
+	elif note_data.start_beat_number > array_to[-1].start_beat_number:
 		array_to.append(note_data)
-	else :
+	else:
 		for idx in array_to.size():
 			var note:NoteData = array_to[idx]
 			if abs(note.start_beat_number - note_data.start_beat_number) < 0.01:
-				array_to.remove(idx)
+				array_to.remove_at(idx)
 				break
 			elif note.start_beat_number > note_data.start_beat_number:
-				var thing: = array_to.slice(0, idx - 1)
+				var thing: = array_to.slice(0, idx)
 				thing.append(note_data)
-				thing.append_array(array_to.slice(idx, array_to.size() - 1))
+				thing.append_array(array_to.slice(idx, array_to.size()))
 				array_to = thing
 				break
 	return array_to
@@ -363,7 +362,7 @@ func send_notification(text:String)->void :
 	editor_notifications.add_child(label)
 	var tw: = label.create_tween()
 	tw.tween_property(label, "modulate:a", 0.0, 5.0)
-	tw.connect("finished", self, "_on_notif_died", [label])
+	tw.connect("finished", Callable(self, "_on_notif_died").bind(label))
 
 
 func _on_notif_died(label:Label)->void :
@@ -381,7 +380,7 @@ func _on_command_focus_exited()->void :
 
 
 func _notification(what:int)->void :
-	if what == NOTIFICATION_WM_QUIT_REQUEST:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if not changes_done:
 			get_tree().quit()
 		else :
@@ -405,7 +404,7 @@ func refresh_lane(lane:int)->void :
 
 
 func add_editor_note_child(note_data:NoteData)->Node:
-	var new_note_node = preload("res://Note.tscn").instance()
+	var new_note_node = preload("res://Note.tscn").instantiate()
 	new_note_node.hit_beat_number = note_data.start_beat_number
 	if note_data.is_sustain():
 		new_note_node.release_beat_number = note_data.end_beat_number
@@ -424,7 +423,7 @@ func setup_note_nodes(note_array:Array):
 	var previous_note_node = null
 	
 	for note_data in note_array:
-		var new_note_node = preload("res://Note.tscn").instance()
+		var new_note_node = preload("res://Note.tscn").instantiate()
 		new_note_node.hit_beat_number = note_data.start_beat_number
 		if note_data.is_sustain():
 			new_note_node.release_beat_number = note_data.end_beat_number
@@ -456,7 +455,7 @@ func _on_set_scroll_speed_requested(to:Fraction):
 	send_notification("Scroll speed set to %s" % to.as_string())
 
 func _on_align_cursor_to_grid_requested():
-	editor_beat = stepify(editor_beat, editor_scroll_grid)
+	editor_beat = snapped(editor_beat, editor_scroll_grid)
 	send_notification("Aligned cursor to grid")
 
 func _on_notification_requested(notification:String):
@@ -533,7 +532,7 @@ func _on_mode_change_requested(to:int):
 	editor_mode = to
 
 func _on_raise_requested(requested_amt:float):
-	var amt: = editor_scroll_grid * sign(requested_amt) if is_inf(requested_amt) else requested_amt
+	var amt:float = editor_scroll_grid * sign(requested_amt) if is_inf(requested_amt) else requested_amt
 	changes_done = true
 	
 	for lane_data in conductor.notes:
@@ -552,7 +551,7 @@ func _on_raise_requested(requested_amt:float):
 	refresh_lane(2)
 
 func _on_raise_selection_requested(selections:Array, requested_amt:float):
-	var amt: = editor_scroll_grid * sign(requested_amt) if is_inf(requested_amt) else requested_amt
+	var amt:float = editor_scroll_grid * sign(requested_amt) if is_inf(requested_amt) else requested_amt
 	changes_done = true
 	var already_raised: = []
 	
@@ -571,7 +570,7 @@ func _on_raise_selection_requested(selections:Array, requested_amt:float):
 		selection.end.y += amt
 		selection.start.y += amt
 	
-	var selection_was_empty = already_raised.empty()
+	var selection_was_empty = already_raised.is_empty()
 	
 	if not selection_was_empty:
 		send_notification("%s everything in selection by %s" % ["Raised" if amt > 0 else "Lowered", abs(amt)])
@@ -601,7 +600,7 @@ func _on_put_selection_in_clipboard_requested(clipboard, selections):
 				if note in selected_notes:continue
 				selected_notes.append(note)
 	
-	if selected_notes.empty():
+	if selected_notes.is_empty():
 		send_notification("Selection is empty, clipboard %s remains unchanged" % clipboard)
 		return 
 	
@@ -626,7 +625,7 @@ func _on_delete_selection_requested(selections):
 		total_minimum.y = min(selection.start.y, total_minimum.y)
 		total_minimum.x = min(selection.start.x, total_minimum.x)
 		for lane_data in conductor.notes:
-			var idx: = - 1 + max(find_note_idx_at_beat(lane_data, selection.start.y, true) - 3, 0)
+			var idx:int = - 1 + max(find_note_idx_at_beat(lane_data, selection.start.y, true) - 3, 0)
 			while idx < lane_data.size():
 				idx += 1
 				var note:NoteData = lane_data[idx]
@@ -665,15 +664,15 @@ func _on_keybind_clear_requested():
 
 func get_max_beat()->float:
 	var max_beat: = 0.0
-	if not conductor.notes[2].empty():
+	if not conductor.notes[2].is_empty():
 		max_beat = conductor.notes[2][ - 1].start_beat_number
 		if conductor.notes[2][ - 1].is_sustain():
 			max_beat = conductor.notes[2][ - 1].end_beat_number
-	if not conductor.notes[1].empty():
+	if not conductor.notes[1].is_empty():
 		max_beat = max(max_beat, conductor.notes[1][ - 1].start_beat_number)
 		if conductor.notes[1][ - 1].is_sustain():
 			max_beat = conductor.notes[1][ - 1].end_beat_number
-	if not conductor.notes[0].empty():
+	if not conductor.notes[0].is_empty():
 		max_beat = max(max_beat, conductor.notes[0][ - 1].start_beat_number)
 		if conductor.notes[0][ - 1].is_sustain():
 			max_beat = conductor.notes[0][ - 1].end_beat_number
@@ -709,4 +708,3 @@ func find_note_idx_at_beat(array:Array, beat:float, closest: = false)->int:
 		midnote = array[idx]
 		foundbeat = midnote.start_beat_number
 	return idx
-

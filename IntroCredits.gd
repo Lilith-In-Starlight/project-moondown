@@ -10,4 +10,4 @@ func _process(delta:float)->void :
 
 
 func _on_animation_finished(anim_name:String)->void :
-	get_tree().change_scene_to(preload("res://SongSelect.tscn"))
+	get_tree().change_scene_to_packed(preload("res://SongSelect.tscn"))

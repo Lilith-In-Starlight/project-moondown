@@ -2,14 +2,18 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-path="res://.import/song.mp3-b0b9446a81a56a43b0f87036fc99cb2d.mp3str"
+uid="uid://214oj6124vip"
+path="res://.godot/imported/song.mp3-b0b9446a81a56a43b0f87036fc99cb2d.mp3str"
 
 [deps]
 
 source_file="res://songs/tuipa/song.mp3"
-dest_files=[ "res://.import/song.mp3-b0b9446a81a56a43b0f87036fc99cb2d.mp3str" ]
+dest_files=["res://.godot/imported/song.mp3-b0b9446a81a56a43b0f87036fc99cb2d.mp3str"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

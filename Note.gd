@@ -25,17 +25,17 @@ var released_improperly: = false
 var sent_hit: = false
 var def_modulate:Color
 
-onready var game_node = get_tree().get_nodes_in_group("GameNode")[0]
+@onready var game_node = get_tree().get_nodes_in_group("GameNode")[0]
 
 var simulated: = false
 var simulate_hits: = false
 
-onready var parentparent: = get_parent().get_parent()
+@onready var parentparent: = get_parent().get_parent()
 
 
 func _ready()->void :
 	def_modulate = modulate
-	position.y = - hit_beat_number * Global.SCROLL_SPEED + 513
+	position.y = - hit_beat_number * Global.SCROLL_SPEED + 555
 	if sustain:
 		$Icon2.position.y = - (release_beat_number - hit_beat_number) * Global.SCROLL_SPEED
 		$Icon2.visible = true
@@ -62,8 +62,8 @@ func _process(delta:float)->void :
 		game_node.note_approaches = true
 	
 	
-	var lowest_bound_for_hit: = hit_in_seconds - min(0.2, (hit_in_seconds - seconds_from_previous) * 0.5)
-	var highest_bound_for_hit: = hit_in_seconds + min(0.2, (seconds_for_next - hit_in_seconds) * 0.5)
+	var lowest_bound_for_hit: float = hit_in_seconds - min(0.2, (hit_in_seconds - seconds_from_previous) * 0.5)
+	var highest_bound_for_hit: float = hit_in_seconds + min(0.2, (seconds_for_next - hit_in_seconds) * 0.5)
 	if Input.is_action_just_pressed(action):
 		if previous_note_death_frames > 1:
 			highest_bound_for_hit = hit_in_seconds + 0.2
@@ -108,8 +108,8 @@ func _process(delta:float)->void :
 		if not $AudioStreamPlayer.playing:
 			$AudioStreamPlayer.play()
 		$Icon.visible = false
-		$Icon3.scale.y = (513 - $Icon2.global_position.y) * (1 / 64.0)
-		$Icon3.global_position.y = 513
+		$Icon3.scale.y = (555 - $Icon2.global_position.y) * (1 / 64.0)
+		$Icon3.global_position.y = 555
 		modulate = def_modulate.lightened(0.5)
 		var time_until_release_happens: = release_in_seconds - current_beat_in_seconds
 		var sustain_duration: = release_in_seconds - hit_in_seconds
@@ -153,12 +153,15 @@ func align_to_note_data(nd:NoteData)->void :
 	sustain = nd.is_sustain()
 	
 	def_modulate = modulate
-	position.y = - hit_beat_number * Global.SCROLL_SPEED + 513
+	position.y = - hit_beat_number * Global.SCROLL_SPEED + 555
 	if sustain:
 		$Icon2.position.y = - (release_beat_number - hit_beat_number) * Global.SCROLL_SPEED
 		$Icon2.visible = true
 		$Icon3.visible = true
 		$Icon3.scale.y = (1 / 64.0) * ($Icon.position.y - $Icon2.position.y)
+	else:
+		$Icon2.visible = false
+		$Icon3.visible = false
 	hit_in_seconds = hit_beat_number * conductor.crotchet
 	release_in_seconds = release_beat_number * conductor.crotchet
 	position.x = 100 * (lane - 2) + (get_viewport_rect().size.x / 2.0)

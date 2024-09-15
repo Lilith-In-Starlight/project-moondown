@@ -5,9 +5,9 @@ var selection_cursor: = 1
 var preview_position: = 0.0
 var selected_clipboard: = 0
 
-onready var select_mode_cursor: = $"../CursorX"
-onready var selection_display: = $"../Selections"
-onready var preview_display: = $"../PastePreview"
+@onready var select_mode_cursor: = $"../CursorX"
+@onready var selection_display: = $"../Selections"
+@onready var preview_display: = $"../PastePreview"
 
 
 func process(delta:float, editor:EditorGameMode):
@@ -24,18 +24,18 @@ func process(delta:float, editor:EditorGameMode):
 		var note:NoteData = editor.clipboards[selected_clipboard][idx]
 		var glane: = note.lane - 1 + selection_cursor
 
-		child.rect_position.x = 100 * wrapi(glane, - 1, 2) + (preview_display.rect_size.x / 2.0) - 32
-		child.rect_position.y = note.start_beat_number * - Global.SCROLL_SPEED - 32
+		child.position.x = 100 * wrapi(glane, - 1, 2) + (preview_display.size.x / 2.0) - 32
+		child.position.y = note.start_beat_number * - Global.SCROLL_SPEED - 32
 		if note.is_sustain() and child.get_child_count() == 0:
 			var trail: = TextureRect.new()
 			trail.texture = preload("res://Sprites/Sustain1.png")
-			trail.rect_scale.y = (note.end_beat_number - note.start_beat_number) * Global.SCROLL_SPEED / 64.0
-			trail.rect_position.y = (note.end_beat_number - note.start_beat_number) * - Global.SCROLL_SPEED
+			trail.scale.y = (note.end_beat_number - note.start_beat_number) * Global.SCROLL_SPEED / 64.0
+			trail.position.y = (note.end_beat_number - note.start_beat_number) * - Global.SCROLL_SPEED
 			child.add_child(trail)
 		elif not note.is_sustain() and child.get_child_count() > 0:
 			child.get_child(0).free()
 	
-	preview_display.rect_position.y = lerp(preview_display.rect_position.y, (editor.editor_beat - preview_position) * Global.SCROLL_SPEED + 513, 0.2)
+	preview_display.position.y = lerp(preview_display.position.y, (editor.editor_beat - preview_position) * Global.SCROLL_SPEED + 513, 0.2)
 
 
 func parse_command(editor:EditorGameMode):
@@ -49,12 +49,12 @@ func parse_command(editor:EditorGameMode):
 				clear = true
 				match input:
 					KEY_J:
-						if current_parse.empty():
+						if current_parse.is_empty():
 							emit_signal("scroll_request", - 0.25)
 						elif Util.is_valid_fraction(current_parse):
 							emit_signal("arbitrary_scroll_request", - Util.frac_to_float(current_parse))
 					KEY_K:
-						if current_parse.empty():
+						if current_parse.is_empty():
 							emit_signal("scroll_request", 0.25)
 						elif Util.is_valid_fraction(current_parse):
 							emit_signal("arbitrary_scroll_request", Util.frac_to_float(current_parse))
@@ -72,24 +72,24 @@ func parse_command(editor:EditorGameMode):
 				match input:
 					KEY_K:
 						clear = true
-						if current_parse.empty() or current_parse.is_valid_integer():
-							var amt: = 1 if current_parse.empty() else current_parse as int
+						if current_parse.is_empty() or current_parse.is_valid_int():
+							var amt: = 1 if current_parse.is_empty() else current_parse as int
 							emit_signal("scroll_request", amt)
 					KEY_J:
 						clear = true
-						if current_parse.empty() or current_parse.is_valid_integer():
-							var amt: = 1 if current_parse.empty() else current_parse as int
+						if current_parse.is_empty() or current_parse.is_valid_int():
+							var amt: = 1 if current_parse.is_empty() else current_parse as int
 							emit_signal("scroll_request", - amt)
 					KEY_M:
 						clear = true
-						if current_parse.empty() or Util.is_valid_fraction(current_parse):
-							var desired_val: = Fraction.new(1, 1) if current_parse.empty() else Util.frac_to_frac(current_parse)
+						if current_parse.is_empty() or Util.is_valid_fraction(current_parse):
+							var desired_val: = Fraction.new(1, 1) if current_parse.is_empty() else Util.frac_to_frac(current_parse)
 							if desired_val == null:
 								desired_val = Fraction.new(1, 1)
 							emit_signal("set_scroll_speed_request", desired_val)
 					KEY_N:
 						clear = true
-						if not current_parse.empty() and Util.is_valid_fraction(current_parse):
+						if not current_parse.is_empty() and Util.is_valid_fraction(current_parse):
 							var desired_val = Util.frac_to_frac(current_parse)
 							if desired_val != null:
 								emit_signal("set_gridsize_request", desired_val)
@@ -110,19 +110,19 @@ func parse_command(editor:EditorGameMode):
 							emit_signal("scroll_to_request", destination)
 					KEY_H:
 						clear = true
-						if Util.is_valid_fraction(current_parse) or current_parse.empty():
-							var amt: = editor.editor_scroll_grid if current_parse.empty() else Util.frac_to_float(current_parse)
+						if Util.is_valid_fraction(current_parse) or current_parse.is_empty():
+							var amt: = editor.editor_scroll_grid if current_parse.is_empty() else Util.frac_to_float(current_parse)
 							preview_position += amt
 					KEY_L:
 						clear = true
-						if Util.is_valid_fraction(current_parse) or current_parse.empty():
-							var amt: = editor.editor_scroll_grid if current_parse.empty() else Util.frac_to_float(current_parse)
+						if Util.is_valid_fraction(current_parse) or current_parse.is_empty():
+							var amt: = editor.editor_scroll_grid if current_parse.is_empty() else Util.frac_to_float(current_parse)
 							preview_position -= amt
 					KEY_PERIOD:
 						clear = true
-						if current_parse.empty():
+						if current_parse.is_empty():
 							emit_signal("notification_request", "Expected a single digit number (clipboard referrent)")
-						elif not current_parse.is_valid_integer():
+						elif not current_parse.is_valid_int():
 							emit_signal("notification_request", "Expected a single digit number (clipboard referrent)")
 						elif current_parse.length() > 1:
 							emit_signal("notification_request", "Clipboards are identified with single digits")
@@ -164,4 +164,3 @@ func parse_command(editor:EditorGameMode):
 				else :
 					emit_signal("keybind_clear_request")
 					current_parse = ""
-
